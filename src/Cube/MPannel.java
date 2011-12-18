@@ -13,6 +13,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import java.util.Arrays;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -20,15 +21,25 @@ import java.util.Arrays;
  */
 public class MPannel extends JPanel
 {
-    final int edge = 300;
-    Cube cube = new Cube (edge);
-    long mouseX = 0;
-    long mouseY = 0;
-    long time = 0;
-    long angleRatio = 360;
+    private final int edge = 300;
+    private Cube cube = new Cube (edge);
+    private long mouseX = 0;
+    private long mouseY = 0;
+    private long time = 0;
+    private long angleRatio = 360;
+
+
+    private double yaw = 0;
+    private double roll = 0;
+    private double pitch = 0;
+    private Rotation rotation = new Rotation(cube);
+
+
+
     public MPannel() {
 
         setBorder(BorderFactory.createLineBorder(Color.black));
+        SwingUtilities.invokeLater(rotation);
 
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
@@ -42,7 +53,12 @@ public class MPannel extends JPanel
             public void mouseDragged(MouseEvent e) {
             long deltaX = mouseX - Math.round(e.getPoint().getX());
             long deltaY = mouseY - Math.round(e.getPoint().getY());
-            cube.rotate(((1-deltaX)/(deltaY+1))*2*Math.PI/angleRatio, -deltaX*(2*Math.PI)/angleRatio,  -deltaY*(2*Math.PI)/angleRatio);
+            
+            yaw = (-deltaX*(deltaY==0?0:1)/(deltaY==0?1:deltaY))*2*Math.PI/angleRatio;
+            pitch = deltaX*(2*Math.PI)/angleRatio;
+            roll =  -deltaY*(2*Math.PI)/angleRatio;
+                         
+            cube.rotate(yaw, pitch, roll);
 
             repaint();
             mouseX = Math.round(e.getPoint().getX());
@@ -57,13 +73,6 @@ public class MPannel extends JPanel
             }
         });
 
-    }
-
-
-
-
-    public Dimension getPreferredSize() {
-        return new Dimension(250,200);
     }
 
     protected void paintComponent(Graphics g) {

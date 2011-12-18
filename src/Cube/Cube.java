@@ -11,8 +11,9 @@ package Cube;
  */
 public class Cube
 {
-    Vertex [] vertexs = new  Vertex[8];
-    int edgeLength;
+    private Vertex [] vertexs = new  Vertex[8];
+    private int edgeLength;
+    private int distance;
 
     public Cube(int edgeLength)
     {
@@ -25,6 +26,7 @@ public class Cube
         vertexs[5] = new Vertex(-this.edgeLength, -this.edgeLength, this.edgeLength);
         vertexs[6] = new Vertex(-this.edgeLength, -this.edgeLength, -this.edgeLength);
         vertexs[7] = new Vertex(this.edgeLength, -this.edgeLength, -this.edgeLength);
+        distance =  2*edgeLength;
     }
 
     public void rotate (double yaw, double pitch, double roll)
@@ -49,7 +51,7 @@ public class Cube
         
         for (int i=0;i<8;i++)
         {
-            tmp[i] = edgeLength -((int) Math.round(vertexs[i].getX()));
+            tmp[i] =  ((int) Math.round(vertexs[i].getX()*(distance-vertexs[i].getZ())/(distance+edgeLength)));
         }        
         return tmp;
     }
@@ -59,7 +61,7 @@ public class Cube
         int [] tmp = new int [8];
         for (int i=0;i<8;i++)
         {
-            tmp [i] = (int) Math.round(vertexs[i].getY());
+            tmp [i] = (int) Math.round(vertexs[i].getY()*(distance-vertexs[i].getZ())/(distance+edgeLength));
         }
         return tmp;
     }
@@ -69,7 +71,7 @@ public class Cube
         int [] tmp = new int [8];
         for (int i=0;i<8;i++)
         {
-            tmp [i] = (int) Math.round(vertexs[i].getZ());
+            tmp [i] = (int) Math.round(vertexs[i].getZ() );
         }
         return tmp;
     }
