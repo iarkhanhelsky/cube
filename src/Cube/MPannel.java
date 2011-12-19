@@ -77,7 +77,11 @@ public class MPannel extends JPanel
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawString("X = "+mouseX+" Y = "+mouseY+" timestamp = "+time,10,20);
+        g.setColor(new Color (236,236,236));
+        g.fillRect(0, 0, this.getBounds().width, this.getBounds().height);
+        g.setColor(Color.BLACK);
+        g.drawString("X = "+mouseX+" Y = "+mouseY+" timestamp = "+time+" WIDTH = "+this.getBounds().width +" HEIGHT = "+ this.getBounds().height,10,20);
+        
         
         int[] x = cube.getXProjection();
         int[] y = cube.getYProjection();
@@ -88,7 +92,7 @@ public class MPannel extends JPanel
             y[i] += edge;
         }
         Side[] sides = new Side[6];
-        g.clearRect(0, 0, MPannel.WIDTH , MPannel.HEIGHT);
+      
 
 
         int[] SideAX =

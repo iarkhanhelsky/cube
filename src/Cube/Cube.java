@@ -26,7 +26,7 @@ public class Cube
         vertexs[5] = new Vertex(-this.edgeLength, -this.edgeLength, this.edgeLength);
         vertexs[6] = new Vertex(-this.edgeLength, -this.edgeLength, -this.edgeLength);
         vertexs[7] = new Vertex(this.edgeLength, -this.edgeLength, -this.edgeLength);
-        distance =  2*edgeLength;
+        distance =  6*edgeLength;
     }
 
     public void rotate (double yaw, double pitch, double roll)
