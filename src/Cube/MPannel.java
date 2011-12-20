@@ -32,15 +32,12 @@ public class MPannel extends JPanel implements ActionListener
     private final double G = 0.0098;
     private double yaw = 0;
     private double roll = 0;
-    private double pitch = 0;
-    private Rotation rotation = new Rotation(cube);
+    private double pitch = 0;   
 
     public MPannel()
     {
 
         setBorder(BorderFactory.createLineBorder(Color.black));
-        SwingUtilities.invokeLater(rotation);
-
         addMouseListener(new MouseAdapter()
         {
 
