@@ -52,7 +52,6 @@ public class MPannel extends JPanel implements ActionListener
                 yaw = 0;
                 pitch = 0;
                 roll = 0;
-
             }
         });
         timer = new Timer(50, this);
@@ -74,7 +73,6 @@ public class MPannel extends JPanel implements ActionListener
                 repaint();
                 mouseX = Math.round(e.getPoint().getX());
                 mouseY = Math.round(e.getPoint().getY());
-
             }
         });
         addMouseListener(new MouseAdapter()
@@ -88,8 +86,6 @@ public class MPannel extends JPanel implements ActionListener
                 pitch += deltaX * (2 * Math.PI) / angleRatio;
                 roll += -deltaY * (2 * Math.PI) / angleRatio;
                 timer.start();
-
-
             }
         });
 
@@ -98,7 +94,6 @@ public class MPannel extends JPanel implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
         cube.rotate(yaw, pitch, roll);
-
         yaw = sgn(yaw) * Math.abs(Math.abs(yaw) - Math.abs(yaw * G));
         pitch = sgn(pitch) * Math.abs(Math.abs(pitch) - Math.abs(pitch * G));
         roll = sgn(roll) * Math.abs(Math.abs(roll) - Math.abs(roll * G));
@@ -126,8 +121,8 @@ public class MPannel extends JPanel implements ActionListener
         g.setColor(new Color(236, 236, 236));
         g.fillRect(0, 0, this.getBounds().width, this.getBounds().height);
         g.setColor(Color.BLACK);
+    /*dev output */
         g.drawString("X = " + mouseX + " Y = " + mouseY + " YAW = " + yaw + " PITCH = " + pitch + " ROLL = " + roll, 10, 20);
-
 
         int[] x = cube.getXProjection();
         int[] y = cube.getYProjection();
@@ -138,8 +133,6 @@ public class MPannel extends JPanel implements ActionListener
             y[i] += edge;
         }
         Side[] sides = new Side[6];
-
-
 
         int[] SideAX =
         {
@@ -206,7 +199,6 @@ public class MPannel extends JPanel implements ActionListener
         sides[5] = new Side(SideFZCenter, SideFX, SideFY, new Color(254, 233, 142));
         Arrays.sort(sides);
 
-
         for (int i = 0; i < 6; i++)
         {
 
@@ -214,7 +206,7 @@ public class MPannel extends JPanel implements ActionListener
             g.fillPolygon(sides[i].getxAxises(), sides[i].getyAxises(), 4);
             g.drawPolygon(sides[i].xAxises, sides[i].yAxises, 4);
         }
-
+/* dev output */
         for (int i = 0; i < 8; i++)
         {
             g.setColor(Color.BLACK);
