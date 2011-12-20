@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Cube;
 
 import java.awt.event.ActionEvent;
@@ -23,56 +22,73 @@ import javax.swing.Timer;
  */
 public class MPannel extends JPanel implements ActionListener
 {
+
     private final int edge = 300;
-    private Cube cube = new Cube (edge);
+    private Cube cube = new Cube(edge);
     private long mouseX = 0;
     private long mouseY = 0;
-    private long time = 0;
-    private long angleRatio = 360;
-
+    private long angleRatio = 3600;
     private Timer timer;
-    private final double G = 0.00098;
+    private final double G = 0.0098;
     private double yaw = 0;
     private double roll = 0;
     private double pitch = 0;
     private Rotation rotation = new Rotation(cube);
 
-
-
-    public MPannel() {
+    public MPannel()
+    {
 
         setBorder(BorderFactory.createLineBorder(Color.black));
         SwingUtilities.invokeLater(rotation);
 
-        addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
+        addMouseListener(new MouseAdapter()
+        {
+
+            public void mousePressed(MouseEvent e)
+            {
                 mouseX = Math.round(e.getPoint().getX());
                 mouseY = Math.round(e.getPoint().getY());
-                time = e.getWhen();
+                timer.stop();
+                yaw = 0;
+                pitch = 0;
+                roll = 0;
+
             }
         });
-        timer = new Timer (50,this);
+        timer = new Timer(50, this);
         timer.start();
-        addMouseMotionListener(new MouseAdapter() {
-            public void mouseDragged(MouseEvent e) {
-            long deltaX = mouseX - Math.round(e.getPoint().getX());
-            long deltaY = mouseY - Math.round(e.getPoint().getY());
-            
-            yaw = (-deltaX*(deltaY==0?0:1)/(deltaY==0?1:deltaY))*2*Math.PI/angleRatio;
-            pitch = deltaX*(2*Math.PI)/angleRatio;
-            roll =  -deltaY*(2*Math.PI)/angleRatio;
-                         
-            cube.rotate(yaw, pitch, roll);
+        addMouseMotionListener(new MouseAdapter()
+        {
 
-            repaint();
-            mouseX = Math.round(e.getPoint().getX());
-            mouseY = Math.round(e.getPoint().getY());
+            public void mouseDragged(MouseEvent e)
+            {
+                long deltaX = mouseX - Math.round(e.getPoint().getX());
+                long deltaY = mouseY - Math.round(e.getPoint().getY());
+
+                yaw = (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI * 10 / (angleRatio);
+                pitch = deltaX * (2 * Math.PI) * 10 / (angleRatio);
+                roll = -deltaY * (2 * Math.PI) * 10 / (angleRatio);
+
+                cube.rotate(yaw, pitch, roll);
+
+                repaint();
+                mouseX = Math.round(e.getPoint().getX());
+                mouseY = Math.round(e.getPoint().getY());
 
             }
         });
-        addMouseListener(new MouseAdapter() {
-            public void mouseReleased (MouseEvent e)
+        addMouseListener(new MouseAdapter()
+        {
+
+            public void mouseReleased(MouseEvent e)
             {
+                long deltaX = mouseX - Math.round(e.getPoint().getX());
+                long deltaY = mouseY - Math.round(e.getPoint().getY());
+                yaw += (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI / angleRatio;
+                pitch += deltaX * (2 * Math.PI) / angleRatio;
+                roll += -deltaY * (2 * Math.PI) / angleRatio;
+                timer.start();
+
 
             }
         });
@@ -83,22 +99,20 @@ public class MPannel extends JPanel implements ActionListener
     {
         cube.rotate(yaw, pitch, roll);
 
-        yaw = sgn(yaw)*Math.abs( Math.abs(yaw) - Math.abs(yaw*G));
-        pitch =sgn(pitch)*Math.abs( Math.abs(pitch) - Math.abs(pitch*G));
-        roll = sgn(roll)*Math.abs( Math.abs(roll) - Math.abs(roll*G));
-     
-
+        yaw = sgn(yaw) * Math.abs(Math.abs(yaw) - Math.abs(yaw * G));
+        pitch = sgn(pitch) * Math.abs(Math.abs(pitch) - Math.abs(pitch * G));
+        roll = sgn(roll) * Math.abs(Math.abs(roll) - Math.abs(roll * G));
         this.repaint();
         timer.restart();
     }
 
-    protected int sgn (double x )
+    protected int sgn(double x)
     {
-        if (Math.abs(x) < 0.00003 )
+        if (Math.abs(x) < 0.00003)
         {
-            return  0;
+            return 0;
         }
-        if (x<0)
+        if (x < 0)
         {
             return -1;
 
@@ -106,14 +120,15 @@ public class MPannel extends JPanel implements ActionListener
         return 1;
     }
 
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g)
+    {
         super.paintComponent(g);
-        g.setColor(new Color (236,236,236));
+        g.setColor(new Color(236, 236, 236));
         g.fillRect(0, 0, this.getBounds().width, this.getBounds().height);
         g.setColor(Color.BLACK);
-        g.drawString("X = "+mouseX+" Y = "+mouseY+ " YAW = " +yaw + " PITCH = " + pitch + " ROLL = " + roll ,10,20);
-        
-        
+        g.drawString("X = " + mouseX + " Y = " + mouseY + " YAW = " + yaw + " PITCH = " + pitch + " ROLL = " + roll, 10, 20);
+
+
         int[] x = cube.getXProjection();
         int[] y = cube.getYProjection();
         int[] z = cube.getZProjection();
@@ -123,7 +138,7 @@ public class MPannel extends JPanel implements ActionListener
             y[i] += edge;
         }
         Side[] sides = new Side[6];
-      
+
 
 
         int[] SideAX =
@@ -183,14 +198,14 @@ public class MPannel extends JPanel implements ActionListener
         int SideEZCenter = (z[6] + z[4]) / 2;
         int SideFZCenter = (z[6] + z[3]) / 2;
 
-        sides[0] = new Side(SideAZCenter, SideAX, SideAY, new Color(238,135,31));
+        sides[0] = new Side(SideAZCenter, SideAX, SideAY, new Color(238, 135, 31));
         sides[1] = new Side(SideBZCenter, SideBX, SideBY, new Color(84, 31, 20));
         sides[2] = new Side(SideCZCenter, SideCX, SideCY, new Color(147, 129, 114));
         sides[3] = new Side(SideDZCenter, SideDX, SideDY, new Color(204, 158, 97));
         sides[4] = new Side(SideEZCenter, SideEX, SideEY, new Color(98, 98, 102));
         sides[5] = new Side(SideFZCenter, SideFX, SideFY, new Color(254, 233, 142));
         Arrays.sort(sides);
-        
+
 
         for (int i = 0; i < 6; i++)
         {
@@ -200,15 +215,13 @@ public class MPannel extends JPanel implements ActionListener
             g.drawPolygon(sides[i].xAxises, sides[i].yAxises, 4);
         }
 
-        for (int i=0;i<8;i++)
+        for (int i = 0; i < 8; i++)
         {
             g.setColor(Color.BLACK);
-            g.drawString("Vertex ID = "+i+" X = " + x[i] + " Y = "+ y[i] + " Z = "+ z[i], 10, 40+i*20);
-            g.drawString(""+i, x[i], y[i]);
+            g.drawString("Vertex ID = " + i + " X = " + x[i] + " Y = " + y[i] + " Z = " + z[i], 10, 40 + i * 20);
+            g.drawString("" + i, x[i], y[i]);
         }
-        
 
-    }  
-    
 
+    }
 }
