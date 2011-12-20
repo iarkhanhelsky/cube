@@ -5,21 +5,23 @@
 
 package Cube;
 
+import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import java.util.Arrays;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 /**
  *
  * @author lucian
  */
-public class MPannel extends JPanel
+public class MPannel extends JPanel implements ActionListener
 {
     private final int edge = 300;
     private Cube cube = new Cube (edge);
@@ -28,7 +30,8 @@ public class MPannel extends JPanel
     private long time = 0;
     private long angleRatio = 360;
 
-
+    private Timer timer;
+    private final double G = 0.00098;
     private double yaw = 0;
     private double roll = 0;
     private double pitch = 0;
@@ -48,7 +51,8 @@ public class MPannel extends JPanel
                 time = e.getWhen();
             }
         });
-
+        timer = new Timer (50,this);
+        timer.start();
         addMouseMotionListener(new MouseAdapter() {
             public void mouseDragged(MouseEvent e) {
             long deltaX = mouseX - Math.round(e.getPoint().getX());
@@ -75,12 +79,39 @@ public class MPannel extends JPanel
 
     }
 
+    public void actionPerformed(ActionEvent e)
+    {
+        cube.rotate(yaw, pitch, roll);
+
+        yaw = sgn(yaw)*Math.abs( Math.abs(yaw) - Math.abs(yaw*G));
+        pitch =sgn(pitch)*Math.abs( Math.abs(pitch) - Math.abs(pitch*G));
+        roll = sgn(roll)*Math.abs( Math.abs(roll) - Math.abs(roll*G));
+     
+
+        this.repaint();
+        timer.restart();
+    }
+
+    protected int sgn (double x )
+    {
+        if (Math.abs(x) < 0.00003 )
+        {
+            return  0;
+        }
+        if (x<0)
+        {
+            return -1;
+
+        }
+        return 1;
+    }
+
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(new Color (236,236,236));
         g.fillRect(0, 0, this.getBounds().width, this.getBounds().height);
         g.setColor(Color.BLACK);
-        g.drawString("X = "+mouseX+" Y = "+mouseY+" timestamp = "+time+" WIDTH = "+this.getBounds().width +" HEIGHT = "+ this.getBounds().height,10,20);
+        g.drawString("X = "+mouseX+" Y = "+mouseY+ " YAW = " +yaw + " PITCH = " + pitch + " ROLL = " + roll ,10,20);
         
         
         int[] x = cube.getXProjection();
