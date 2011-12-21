@@ -130,15 +130,15 @@ public class MPannel extends JPanel implements ActionListener
         g.fillRect(0, 0, this.getBounds().width, this.getBounds().height);
         g.setColor(Color.BLACK);
         /*dev output */
-        g.drawString(" EDGE = " + cube.getEdgeLength() + " YAW = " + yaw + " PITCH = " + pitch + " ROLL = " + roll, 10, 20);
+//        g.drawString(" EDGE = " + cube.getEdgeLength() + " YAW = " + yaw + " PITCH = " + pitch + " ROLL = " + roll, 10, 20);
 
         int[] x = cube.getXProjection();
         int[] y = cube.getYProjection();
         int[] z = cube.getZProjection();
         for (int i = 0; i < x.length; i++)
         {
-            x[i] += edge;
-            y[i] += edge;
+            x[i] += this.getBounds().width/2;
+            y[i] += this.getBounds().height/2;
         }
         Side[] sides = new Side[6];
 
@@ -215,12 +215,12 @@ public class MPannel extends JPanel implements ActionListener
             g.drawPolygon(sides[i].xAxises, sides[i].yAxises, 4);
         }
         /* dev output */
-      /*  for (int i = 0; i < 8; i++)
-        {
-            g.setColor(Color.BLACK);
-            g.drawString("Vertex ID = " + i + " X = " + x[i] + " Y = " + y[i] + " Z = " + z[i], 10, 40 + i * 20);
-            g.drawString("" + i, x[i], y[i]);
-        }*/
+//        for (int i = 0; i < 8; i++)
+//        {
+//            g.setColor(Color.BLACK);
+//            g.drawString("Vertex ID = " + i + " X = " + x[i] + " Y = " + y[i] + " Z = " + z[i], 10, 40 + i * 20);
+//            g.drawString("" + i, x[i], y[i]);
+//        }
 
 
     }
