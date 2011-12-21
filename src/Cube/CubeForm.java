@@ -1,8 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @author Архангельский Илья
  */
-
 package Cube;
 
 import javax.swing.JFrame;
@@ -23,8 +21,6 @@ public class CubeForm
     }
 
     private static void createAndShowGUI() {
-        System.out.println("Created GUI on EDT? "+
-        SwingUtilities.isEventDispatchThread());
         JFrame f = new JFrame("Cube");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.add(new MPannel());

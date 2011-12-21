@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @author Архангельский Илья
  */
 package Cube;
 
@@ -71,5 +70,17 @@ public class Vertex
             (int) Math.round(x), (int) Math.round(y), (int) Math.round(z)
         };
         return tmp;
+    }
+
+    public double getNorm ()
+    {
+        return Math.sqrt(x*x+y*y+z*z);
+    }
+    public void setNorm (double n)
+    {
+        double old = getNorm();
+        x = x*n/old;
+        y = y*n/old;
+        z = z*n/old;
     }
 }

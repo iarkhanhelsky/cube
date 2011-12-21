@@ -1,8 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @author Архангельский Илья
  */
-
 package Cube;
 
 /**
@@ -14,6 +12,7 @@ public class Cube
     private Vertex [] vertexs = new  Vertex[8];
     private int edgeLength;
     private int distance;
+    private final int distCoeff = 6;
 
     public Cube(int edgeLength)
     {
@@ -26,9 +25,14 @@ public class Cube
         vertexs[5] = new Vertex(-this.edgeLength, -this.edgeLength, this.edgeLength);
         vertexs[6] = new Vertex(-this.edgeLength, -this.edgeLength, -this.edgeLength);
         vertexs[7] = new Vertex(this.edgeLength, -this.edgeLength, -this.edgeLength);
-        distance =  6*edgeLength;
+        distance =  distCoeff*edgeLength;
     }
-
+       /**
+        *
+        * @param yaw    угол поворота в плоскости XY
+        * @param pitch   угол поворота в плоскости ZX
+        * @param roll  угол поворота в плоскости ZY
+        */
     public void rotate (double yaw, double pitch, double roll)
     {
         if (yaw != 0)
@@ -44,7 +48,10 @@ public class Cube
             pitching(pitch);
         }
     }
-
+    /**
+     *
+     * @return массив X  координат спроецированных вершин
+     */
     public int [] getXProjection ()
     {
         int [] tmp = new int [8];
@@ -55,7 +62,10 @@ public class Cube
         }        
         return tmp;
     }
-
+    /**
+     *
+     * @return  массив Y координат спроецированных вершин
+     */
     public  int [] getYProjection ()
     {
         int [] tmp = new int [8];
@@ -65,7 +75,10 @@ public class Cube
         }
         return tmp;
     }
-
+    /**
+     *
+     * @return массив Z координат вершин
+     */
     public int [] getZProjection ()
     {
         int [] tmp = new int [8];
@@ -75,7 +88,10 @@ public class Cube
         }
         return tmp;
     }
-
+    /**
+     *
+     * @param yaw  угол поворота в плоскости XY
+     */
     public void yawing (double yaw)
     {
         double cos = Math.cos(yaw);
@@ -89,7 +105,10 @@ public class Cube
             vertexs[i] = new Vertex(newX, newY, newZ);
         }
     }
-
+    /**
+     *
+     * @param pitch   угол поворота в плоскости ZX
+     */
     public void pitching (double pitch)
     {
         double cos = Math.cos(pitch);
@@ -103,7 +122,10 @@ public class Cube
             vertexs[i] = new Vertex (newX,newY,newZ);
         }
     }
-
+   /**
+    *
+    * @param roll   угол поворота в плоскости ZY
+    */
     public void rolling (double roll)
     {
         double cos = Math.cos(roll);
@@ -119,5 +141,31 @@ public class Cube
         }
         
     }
+    /**
+     *
+     * @return длину ребра куба
+     */
+    public int getEdgeLength()
+    {
+        return edgeLength*2;
+    }
+
+    /**
+     * Устанавливает новую длину куба. 
+     * @param edgeLength   новая длина ребра куба
+     */
+    public void setEdgeLength(int edgeLength)
+    {
+        edgeLength = edgeLength/2;
+        for (int i=0;i<8;i++)
+        {
+            vertexs[i].setNorm(edgeLength*Math.sqrt(3)/2);
+        }
+        this.edgeLength = edgeLength;
+        distance = distCoeff*edgeLength;
+
+    }
+
+
 
 }

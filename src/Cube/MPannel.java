@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @author Архангельский Илья
  */
 package Cube;
 
@@ -12,8 +11,8 @@ import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseWheelEvent;
 import java.util.Arrays;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 /**
@@ -23,24 +22,57 @@ import javax.swing.Timer;
 public class MPannel extends JPanel implements ActionListener
 {
 
+    /** начальное значение длины ребра куба */
     private final int edge = 300;
     private Cube cube = new Cube(edge);
     private long mouseX = 0;
     private long mouseY = 0;
-    private long angleRatio = 3600;
+    /** Коэффициент для преобразования перемещения мыши в угол поворота */
+    private final long angleRatio = 3600;
     private Timer timer;
+    /** Коэффициент затухания вращения куба*/
     private final double G = 0.0098;
+
     private double yaw = 0;
     private double roll = 0;
-    private double pitch = 0;   
+    private double pitch = 0;
 
-    public MPannel()
+    public class mouseAdapter extends MouseAdapter
     {
+         @Override
+            public void mouseReleased(MouseEvent e)
+            {
 
-        setBorder(BorderFactory.createLineBorder(Color.black));
-        addMouseListener(new MouseAdapter()
-        {
+                long deltaX = mouseX - Math.round(e.getPoint().getX());
+                long deltaY = mouseY - Math.round(e.getPoint().getY());
+                yaw += (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI / angleRatio;
+                pitch += deltaX * (2 * Math.PI) / angleRatio;
+                roll += -deltaY * (2 * Math.PI) / angleRatio;
+                timer.restart();
 
+            }
+         
+           @Override
+            public void mouseWheelMoved(MouseWheelEvent e)
+            {
+                cube.setEdgeLength(cube.getEdgeLength() - 10 * e.getWheelRotation());
+                repaint();
+            }
+           
+           @Override
+            public void mouseDragged(MouseEvent e)
+            {
+                long deltaX = mouseX - Math.round(e.getPoint().getX());
+                long deltaY = mouseY - Math.round(e.getPoint().getY());
+                yaw = (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI * 10 / (angleRatio);
+                pitch = deltaX * (2 * Math.PI) * 10 / (angleRatio);
+                roll = -deltaY * (2 * Math.PI) * 10 / (angleRatio);
+                cube.rotate(yaw, pitch, roll);
+                repaint();
+                mouseX = Math.round(e.getPoint().getX());
+                mouseY = Math.round(e.getPoint().getY());
+            }
+            @Override
             public void mousePressed(MouseEvent e)
             {
                 mouseX = Math.round(e.getPoint().getX());
@@ -50,42 +82,19 @@ public class MPannel extends JPanel implements ActionListener
                 pitch = 0;
                 roll = 0;
             }
-        });
+    }
+
+     
+
+    public MPannel()
+    {
+
+        setBorder(BorderFactory.createLineBorder(Color.black));
         timer = new Timer(50, this);
         timer.start();
-        addMouseMotionListener(new MouseAdapter()
-        {
-
-            public void mouseDragged(MouseEvent e)
-            {
-                long deltaX = mouseX - Math.round(e.getPoint().getX());
-                long deltaY = mouseY - Math.round(e.getPoint().getY());
-
-                yaw = (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI * 10 / (angleRatio);
-                pitch = deltaX * (2 * Math.PI) * 10 / (angleRatio);
-                roll = -deltaY * (2 * Math.PI) * 10 / (angleRatio);
-
-                cube.rotate(yaw, pitch, roll);
-
-                repaint();
-                mouseX = Math.round(e.getPoint().getX());
-                mouseY = Math.round(e.getPoint().getY());
-            }
-        });
-        addMouseListener(new MouseAdapter()
-        {
-
-            public void mouseReleased(MouseEvent e)
-            {
-                long deltaX = mouseX - Math.round(e.getPoint().getX());
-                long deltaY = mouseY - Math.round(e.getPoint().getY());
-                yaw += (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI / angleRatio;
-                pitch += deltaX * (2 * Math.PI) / angleRatio;
-                roll += -deltaY * (2 * Math.PI) / angleRatio;
-                timer.start();
-            }
-        });
-
+        addMouseMotionListener(new mouseAdapter());
+        addMouseListener(new mouseAdapter());
+        addMouseWheelListener(new mouseAdapter());
     }
 
     public void actionPerformed(ActionEvent e)
@@ -112,14 +121,15 @@ public class MPannel extends JPanel implements ActionListener
         return 1;
     }
 
+    @Override
     protected void paintComponent(Graphics g)
     {
         super.paintComponent(g);
         g.setColor(new Color(236, 236, 236));
         g.fillRect(0, 0, this.getBounds().width, this.getBounds().height);
         g.setColor(Color.BLACK);
-    /*dev output */
-        g.drawString("X = " + mouseX + " Y = " + mouseY + " YAW = " + yaw + " PITCH = " + pitch + " ROLL = " + roll, 10, 20);
+        /*dev output */
+       // g.drawString(" EDGE = " + cube.getEdgeLength() + " YAW = " + yaw + " PITCH = " + pitch + " ROLL = " + roll, 10, 20);
 
         int[] x = cube.getXProjection();
         int[] y = cube.getYProjection();
@@ -203,13 +213,13 @@ public class MPannel extends JPanel implements ActionListener
             g.fillPolygon(sides[i].getxAxises(), sides[i].getyAxises(), 4);
             g.drawPolygon(sides[i].xAxises, sides[i].yAxises, 4);
         }
-/* dev output */
-        for (int i = 0; i < 8; i++)
+        /* dev output */
+      /*  for (int i = 0; i < 8; i++)
         {
             g.setColor(Color.BLACK);
             g.drawString("Vertex ID = " + i + " X = " + x[i] + " Y = " + y[i] + " Z = " + z[i], 10, 40 + i * 20);
             g.drawString("" + i, x[i], y[i]);
-        }
+        }*/
 
 
     }
