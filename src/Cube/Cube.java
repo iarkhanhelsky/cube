@@ -16,7 +16,8 @@ public class Cube
 
     public Cube(int edgeLength)
     {
-        this.edgeLength = edgeLength/2;
+        edgeLength /=2;
+        this.edgeLength = edgeLength;
         vertexs[0] = new Vertex(this.edgeLength, this.edgeLength, this.edgeLength);
         vertexs[1] = new Vertex(-this.edgeLength, this.edgeLength, this.edgeLength);
         vertexs[2] = new Vertex(-this.edgeLength, this.edgeLength, -this.edgeLength);
@@ -25,7 +26,7 @@ public class Cube
         vertexs[5] = new Vertex(-this.edgeLength, -this.edgeLength, this.edgeLength);
         vertexs[6] = new Vertex(-this.edgeLength, -this.edgeLength, -this.edgeLength);
         vertexs[7] = new Vertex(this.edgeLength, -this.edgeLength, -this.edgeLength);
-        distance =  distCoeff*edgeLength;
+        distance =  distCoeff*this.edgeLength;
     }
        /**
         *
@@ -159,10 +160,10 @@ public class Cube
         edgeLength = edgeLength/2;
         for (int i=0;i<8;i++)
         {
-            vertexs[i].setNorm(edgeLength*Math.sqrt(3)/2);
+            vertexs[i].setNorm(edgeLength*Math.sqrt(3));
         }
         this.edgeLength = edgeLength;
-        distance = distCoeff*edgeLength;
+        distance =  distCoeff*this.edgeLength;
 
     }
 

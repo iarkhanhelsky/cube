@@ -24,7 +24,7 @@ public class MPannel extends JPanel implements ActionListener
 
     /** начальное значение длины ребра куба */
     private final int edge = 300;
-    private Cube cube = new Cube(edge);
+    private Cube cube;
     private long mouseX = 0;
     private long mouseY = 0;
     /** Коэффициент для преобразования перемещения мыши в угол поворота */
@@ -94,6 +94,7 @@ public class MPannel extends JPanel implements ActionListener
         timer.start();
         addMouseMotionListener(new mouseAdapter());
         addMouseListener(new mouseAdapter());
+        cube = new Cube(edge);
         addMouseWheelListener(new mouseAdapter());
     }
 
@@ -129,7 +130,7 @@ public class MPannel extends JPanel implements ActionListener
         g.fillRect(0, 0, this.getBounds().width, this.getBounds().height);
         g.setColor(Color.BLACK);
         /*dev output */
-       // g.drawString(" EDGE = " + cube.getEdgeLength() + " YAW = " + yaw + " PITCH = " + pitch + " ROLL = " + roll, 10, 20);
+        g.drawString(" EDGE = " + cube.getEdgeLength() + " YAW = " + yaw + " PITCH = " + pitch + " ROLL = " + roll, 10, 20);
 
         int[] x = cube.getXProjection();
         int[] y = cube.getYProjection();
