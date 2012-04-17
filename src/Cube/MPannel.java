@@ -131,7 +131,7 @@ public class MPannel extends JPanel implements ActionListener
 
         /*Отладочный вывод */
 //        g.drawString(" EDGE = " + cube.getEdgeLength() + " YAW = " + yaw + " PITCH = " + pitch + " ROLL = " + roll, 10, 20);
-        Side[] sides = cube.getSides();
+        Side[] sides = cube.getProjectedSides();
         /** Смещаем в центр фрэйма*/
         for (int i = 0; i < sides.length; i++)
         {

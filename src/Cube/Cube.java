@@ -173,7 +173,7 @@ public class Cube
         distance =  distCoeff*this.edgeLength;
     }
 
-    public Side[] getSides ()
+    public Side[] getProjectedSides ()
     {
         int[] x = this.getXProjection();
         int[] y = this.getYProjection();
