@@ -8,16 +8,17 @@ import javax.swing.JPanel;
 import javax.swing.BorderFactory;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
-import java.util.Arrays;
 import javax.swing.Timer;
 
 /**
  *
- * @author lucian
+ * @author Архангельский Илья
  */
 public class MPannel extends JPanel implements ActionListener
 {
@@ -25,6 +26,7 @@ public class MPannel extends JPanel implements ActionListener
     /** начальное значение длины ребра куба */
     private final int edge = 300;
     private Cube cube;
+    /** Позиция мыши */
     private long mouseX = 0;
     private long mouseY = 0;
     /** Коэффициент для преобразования перемещения мыши в угол поворота */
@@ -32,63 +34,61 @@ public class MPannel extends JPanel implements ActionListener
     private Timer timer;
     /** Коэффициент затухания вращения куба*/
     private final double G = 0.0098;
-
+    /** Углы поворота */
     private double yaw = 0;
     private double roll = 0;
     private double pitch = 0;
 
     public class mouseAdapter extends MouseAdapter
     {
-         @Override
-            public void mouseReleased(MouseEvent e)
-            {
 
-                long deltaX = mouseX - Math.round(e.getPoint().getX());
-                long deltaY = mouseY - Math.round(e.getPoint().getY());
-                yaw += (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI / angleRatio;
-                pitch += deltaX * (2 * Math.PI) / angleRatio;
-                roll += -deltaY * (2 * Math.PI) / angleRatio;
-                timer.restart();
+        @Override
+        public void mouseReleased(MouseEvent e)
+        {
+            long deltaX = mouseX - Math.round(e.getPoint().getX());
+            long deltaY = mouseY - Math.round(e.getPoint().getY());
+            // Преобразование перемещения мыши в уголы поворота куба
+            yaw += (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI / angleRatio;
+            pitch += deltaX * (2 * Math.PI) / angleRatio;
+            roll += -deltaY * (2 * Math.PI) / angleRatio;
+            timer.restart();
+        }
 
-            }
-         
-           @Override
-            public void mouseWheelMoved(MouseWheelEvent e)
-            {
-                cube.setEdgeLength(cube.getEdgeLength() - 10 * e.getWheelRotation());
-                repaint();
-            }
-           
-           @Override
-            public void mouseDragged(MouseEvent e)
-            {
-                long deltaX = mouseX - Math.round(e.getPoint().getX());
-                long deltaY = mouseY - Math.round(e.getPoint().getY());
-                yaw = (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI * 10 / (angleRatio);
-                pitch = deltaX * (2 * Math.PI) * 10 / (angleRatio);
-                roll = -deltaY * (2 * Math.PI) * 10 / (angleRatio);
-                cube.rotate(yaw, pitch, roll);
-                repaint();
-                mouseX = Math.round(e.getPoint().getX());
-                mouseY = Math.round(e.getPoint().getY());
-            }
-            @Override
-            public void mousePressed(MouseEvent e)
-            {
-                mouseX = Math.round(e.getPoint().getX());
-                mouseY = Math.round(e.getPoint().getY());
-                timer.stop();
-                yaw = 0;
-                pitch = 0;
-                roll = 0;
-            }
+        @Override
+        public void mouseWheelMoved(MouseWheelEvent e)
+        {
+            cube.setEdgeLength(cube.getEdgeLength() - 10 * e.getWheelRotation());
+            repaint();
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e)
+        {
+            long deltaX = mouseX - Math.round(e.getPoint().getX());
+            long deltaY = mouseY - Math.round(e.getPoint().getY());
+            yaw = (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI * 10 / (angleRatio);
+            pitch = deltaX * (2 * Math.PI) * 10 / (angleRatio);
+            roll = -deltaY * (2 * Math.PI) * 10 / (angleRatio);
+            cube.rotate(yaw, pitch, roll);
+            repaint();
+            mouseX = Math.round(e.getPoint().getX());
+            mouseY = Math.round(e.getPoint().getY());
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e)
+        {
+            mouseX = Math.round(e.getPoint().getX());
+            mouseY = Math.round(e.getPoint().getY());
+            timer.stop();
+            yaw = 0;
+            pitch = 0;
+            roll = 0;
+        }
     }
-
-     
 
     public MPannel()
     {
-
         setBorder(BorderFactory.createLineBorder(Color.black));
         timer = new Timer(50, this);
         timer.start();
@@ -108,120 +108,48 @@ public class MPannel extends JPanel implements ActionListener
         timer.restart();
     }
 
+    /**
+     * @param x
+     * @return реализация математической функции signum
+     */
     protected int sgn(double x)
     {
-        if (Math.abs(x) < 0.00003)
-        {
-            return 0;
-        }
-        if (x < 0)
-        {
-            return -1;
-
-        }
-        return 1;
+        return (int) (x / Math.abs(x));
     }
 
     @Override
-    protected void paintComponent(Graphics g)
+    protected void paintComponent(Graphics gOrig)
     {
-        super.paintComponent(g);
+        super.paintComponent(gOrig);
+
+        Graphics2D g = (Graphics2D) gOrig;
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(new Color(236, 236, 236));
         g.fillRect(0, 0, this.getBounds().width, this.getBounds().height);
         g.setColor(Color.BLACK);
-        /*dev output */
+
+        /*Отладочный вывод */
 //        g.drawString(" EDGE = " + cube.getEdgeLength() + " YAW = " + yaw + " PITCH = " + pitch + " ROLL = " + roll, 10, 20);
-
-        int[] x = cube.getXProjection();
-        int[] y = cube.getYProjection();
-        int[] z = cube.getZProjection();
-        for (int i = 0; i < x.length; i++)
+        Side[] sides = cube.getSides();
+        /** Смещаем в центр фрэйма*/
+        for (int i = 0; i < sides.length; i++)
         {
-            x[i] += this.getBounds().width/2;
-            y[i] += this.getBounds().height/2;
+            sides[i].move(this.getBounds().width / 2, this.getBounds().height / 2);
         }
-        Side[] sides = new Side[6];
-
-        int[] SideAX =
-        {
-            x[0], x[1], x[2], x[3]
-        };
-        int[] SideBX =
-        {
-            x[0], x[1], x[5], x[4]
-        };
-        int[] SideCX =
-        {
-            x[0], x[3], x[7], x[4]
-        };
-        int[] SideDX =
-        {
-            x[6], x[5], x[1], x[2]
-        };
-        int[] SideEX =
-        {
-            x[6], x[7], x[4], x[5]
-        };
-        int[] SideFX =
-        {
-            x[6], x[2], x[3], x[7]
-        };
-
-        int[] SideAY =
-        {
-            y[0], y[1], y[2], y[3]
-        };
-        int[] SideBY =
-        {
-            y[0], y[1], y[5], y[4]
-        };
-        int[] SideCY =
-        {
-            y[0], y[3], y[7], y[4]
-        };
-        int[] SideDY =
-        {
-            y[6], y[5], y[1], y[2]
-        };
-        int[] SideEY =
-        {
-            y[6], y[7], y[4], y[5]
-        };
-        int[] SideFY =
-        {
-            y[6], y[2], y[3], y[7]
-        };
-
-        int SideAZCenter = (z[0] + z[2]) / 2;
-        int SideBZCenter = (z[0] + z[5]) / 2;
-        int SideCZCenter = (z[0] + z[7]) / 2;
-        int SideDZCenter = (z[6] + z[1]) / 2;
-        int SideEZCenter = (z[6] + z[4]) / 2;
-        int SideFZCenter = (z[6] + z[3]) / 2;
-
-        sides[0] = new Side(SideAZCenter, SideAX, SideAY, new Color(238, 135, 31));
-        sides[1] = new Side(SideBZCenter, SideBX, SideBY, new Color(84, 31, 20));
-        sides[2] = new Side(SideCZCenter, SideCX, SideCY, new Color(147, 129, 114));
-        sides[3] = new Side(SideDZCenter, SideDX, SideDY, new Color(204, 158, 97));
-        sides[4] = new Side(SideEZCenter, SideEX, SideEY, new Color(98, 98, 102));
-        sides[5] = new Side(SideFZCenter, SideFX, SideFY, new Color(254, 233, 142));
-        Arrays.sort(sides);
-
+        /** Отрисовка*/
         for (int i = 0; i < 6; i++)
         {
-
             g.setColor(sides[i].getColor());
             g.fillPolygon(sides[i].getxAxises(), sides[i].getyAxises(), 4);
             g.drawPolygon(sides[i].xAxises, sides[i].yAxises, 4);
         }
-        /* dev output */
+        /* Отладочный вывод */
 //        for (int i = 0; i < 8; i++)
 //        {
 //            g.setColor(Color.BLACK);
 //            g.drawString("Vertex ID = " + i + " X = " + x[i] + " Y = " + y[i] + " Z = " + z[i], 10, 40 + i * 20);
 //            g.drawString("" + i, x[i], y[i]);
 //        }
-
-
     }
 }

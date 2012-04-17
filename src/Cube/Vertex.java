@@ -4,12 +4,12 @@
 package Cube;
 
 /**
- *
- * @author lucian
+ * Реализация класса "Вершина"
+ * Вершина задается вектором с центром в точке (0,0,0)
+ * @author Архангельский Илья
  */
 public class Vertex
 {
-
     private double x;
     private double y;
     private double z;
@@ -19,6 +19,11 @@ public class Vertex
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    /** Геттеры сеттеры*/
+    public Vertex()
+    {
     }
 
     public double getX()
@@ -62,7 +67,7 @@ public class Vertex
         y = vector[1];
         z = vector[2];
     }
-
+    /* Получить целочисленные значения вектора */
     public int[] getIntVector()
     {
         int[] tmp =
@@ -71,16 +76,20 @@ public class Vertex
         };
         return tmp;
     }
-
-    public double getNorm ()
+    /** Получить норму вектора*/
+    public double getNorm()
     {
-        return Math.sqrt(x*x+y*y+z*z);
+        return Math.sqrt(x * x + y * y + z * z);
     }
-    public void setNorm (double n)
+    /** Установить норму вектора*/
+    public void setNorm(double n)
     {
-        double old = getNorm();
-        x = x*n/old;
-        y = y*n/old;
-        z = z*n/old;
+        if (n != 0)
+        {
+            double old = getNorm();
+            x = x * n / old;
+            y = y * n / old;
+            z = z * n / old;
+        }
     }
 }
