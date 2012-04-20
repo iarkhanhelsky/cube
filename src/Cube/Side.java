@@ -14,16 +14,21 @@ import java.awt.Color;
 public class Side implements Comparable<Side>
 {
 
-    int zAxis;
-    int[] xAxises;
-    int[] yAxises;
-    Color color;
+    protected  int zAxis;
+    protected  int[] xPoints;
+    protected  int[] yPoints;
+    protected  Color color;
 
-    public Side(int zAxis, int[] xAxises, int[] yAxises, Color color)
+    public Side(int zAxis, int[] xPoints, int[] yPoints, Color color)
     {
         this.zAxis = zAxis;
-        this.xAxises = xAxises;
-        this.yAxises = yAxises;
+        this.xPoints = xPoints;
+        this.yPoints = yPoints;
+        this.color = color;
+    }
+
+    public void setColor(Color color)
+    {
         this.color = color;
     }
 
@@ -37,28 +42,29 @@ public class Side implements Comparable<Side>
     {
         return color;
     }
+
     /** Массив Х координат вершин */
-    public int[] getxAxises()
+    public int[] getXPoints()
     {
-        return xAxises;
+        return xPoints;
     }
+
     /** Массив Y координат вершин */
-    public int[] getyAxises()
+    public int[] getYPoints()
     {
-        return yAxises;
+        return yPoints;
     }
+
     /** Сдвинуть при проецировании по Х и У */
-    public void move (int x, int y)
+    public void move(int x, int y)
     {
-        for (int i=0;i<xAxises.length;i++)
+        for (int i = 0; i < xPoints.length; i++)
         {
-            xAxises[i] +=x;
+            xPoints[i] += x;
         }
-        for (int i=0;i<yAxises.length;i++)
+        for (int i = 0; i < yPoints.length; i++)
         {
-            yAxises[i]+=y;
+            yPoints[i] += y;
         }
     }
-
-
 }

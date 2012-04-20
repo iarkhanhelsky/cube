@@ -25,7 +25,7 @@ public class MPannel extends JPanel implements ActionListener
 
     /** начальное значение длины ребра куба */
     private final int edge = 300;
-    private Cube cube;
+    private ColorCube cube;
     /** Позиция мыши */
     private long mouseX = 0;
     private long mouseY = 0;
@@ -34,6 +34,7 @@ public class MPannel extends JPanel implements ActionListener
     private Timer timer;
     /** Коэффициент затухания вращения куба*/
     private final double G = 0.0098;
+    private final double EPS = 0.000000000000000001;
     /** Углы поворота */
     private double yaw = 0;
     private double roll = 0;
@@ -57,8 +58,12 @@ public class MPannel extends JPanel implements ActionListener
         @Override
         public void mouseWheelMoved(MouseWheelEvent e)
         {
-            cube.setEdgeLength(cube.getEdgeLength() - 10 * e.getWheelRotation());
-            repaint();
+            if (cube.getEdgeLength() - 10 * e.getWheelRotation() > 0)
+            {
+                cube.setEdgeLength(cube.getEdgeLength() - 10 * e.getWheelRotation());
+                repaint();
+            }
+
         }
 
         @Override
@@ -90,11 +95,11 @@ public class MPannel extends JPanel implements ActionListener
     public MPannel()
     {
         setBorder(BorderFactory.createLineBorder(Color.black));
-        timer = new Timer(50, this);
+        timer = new Timer(10, this);
         timer.start();
         addMouseMotionListener(new mouseAdapter());
         addMouseListener(new mouseAdapter());
-        cube = new Cube(edge);
+        cube = new ColorCube(edge);
         addMouseWheelListener(new mouseAdapter());
     }
 
@@ -130,26 +135,40 @@ public class MPannel extends JPanel implements ActionListener
         g.setColor(Color.BLACK);
 
         /*Отладочный вывод */
-//        g.drawString(" EDGE = " + cube.getEdgeLength() + " YAW = " + yaw + " PITCH = " + pitch + " ROLL = " + roll, 10, 20);
-        Side[] sides = cube.getProjectedSides();
+        g.drawString(" EDGE = " + cube.getEdgeLength() + " YAW = " + yaw + " PITCH = " + pitch + " ROLL = " + roll, 10, 20);
+        ColorSide[] sides = cube.getProjectedSides();
         /** Смещаем в центр фрэйма*/
+        int[] x = cube.getXProjection();
+        int[] y = cube.getYProjection();
+        int[] z = cube.getZProjection();
         for (int i = 0; i < sides.length; i++)
         {
             sides[i].move(this.getBounds().width / 2, this.getBounds().height / 2);
         }
-        /** Отрисовка*/
-        for (int i = 0; i < 6; i++)
+
+        for (int i = 0; i < x.length; i++)
         {
-            g.setColor(sides[i].getColor());
-            g.fillPolygon(sides[i].getxAxises(), sides[i].getyAxises(), 4);
-            g.drawPolygon(sides[i].xAxises, sides[i].yAxises, 4);
+            x[i] += getBounds().width / 2;
+            y[i] += getBounds().height / 2;
+        }
+        /** Отрисовка*/
+        for (int i = 0; i < sides.length ; i++)
+        {
+            Side [] seg = sides[i].pieces(16);
+            for (int j=0;j<seg.length;j++)
+            {
+                g.setColor(seg[j].getColor());
+                g.fillPolygon(seg[j].getXPoints(), seg[j].getYPoints(), 4);
+                g.drawPolygon(seg[j].getXPoints(), seg[j].getYPoints(), 4);
+            }
         }
         /* Отладочный вывод */
-//        for (int i = 0; i < 8; i++)
-//        {
-//            g.setColor(Color.BLACK);
-//            g.drawString("Vertex ID = " + i + " X = " + x[i] + " Y = " + y[i] + " Z = " + z[i], 10, 40 + i * 20);
-//            g.drawString("" + i, x[i], y[i]);
-//        }
+
+        for (int i = 0; i < 8; i++)
+        {
+            g.setColor(Color.BLACK);
+            g.drawString("Vertex ID = " + i + " X = " + x[i] + " Y = " + y[i] + " Z = " + z[i], 10, 40 + i * 20);
+            g.drawString("" + (i + 1), x[i], y[i]);
+        }
     }
 }
