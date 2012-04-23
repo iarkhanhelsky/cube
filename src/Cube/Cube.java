@@ -12,13 +12,27 @@ import java.util.Arrays;
  */
 public class Cube
 {
+    /**
+     * Массив вершин
+     */
     private Vertex [] vertexs = new  Vertex[8];
-    /* Длина ребра*/
+    /**
+     * Длина ребра
+     */
     private int edgeLength;
-    /** Проекционные переменные*/
+   /**
+    * Переменная для проецирования. Дистанция до наблюдателя
+    */
     private int distance;
+    /**
+     * Проекционный коэффициент
+     */
     private final int distCoeff = 8;
 
+   /**
+    * Создает куб с центром в точке (0,0,0) и длинной ребра edgeLength
+    * @param edgeLength длина ребра куба
+    */
     public Cube(int edgeLength)
     {
         edgeLength /=2;
@@ -56,7 +70,7 @@ public class Cube
         }
     }
     /**
-     *
+     * Возвращает спроецированные на экран X координаты вершин.
      * @return массив X  координат спроецированных вершин
      */
     public int [] getXProjection ()
@@ -70,7 +84,7 @@ public class Cube
         return tmp;
     }
     /**
-     *
+     * Возвращает спроецированные на экран Y координаты вершин.
      * @return  массив Y координат спроецированных вершин
      */
     public  int [] getYProjection ()
@@ -83,7 +97,7 @@ public class Cube
         return tmp;
     }
     /**
-     *
+     *  Возвращает спроецированные на экран Z координаты вершин.
      * @return массив Z координат вершин
      */
     public int [] getZProjection ()
@@ -173,7 +187,10 @@ public class Cube
         distance =  distCoeff*this.edgeLength;
     }
 
-    public Side[] getProjectedSides ()
+    /**
+     * Проецирует на экран грани куба
+     * @return спроецированные на UV плоскость (плоскость экрана) грани куба
+     */    public Side[] getProjectedSides ()
     {
         int[] x = this.getXProjection();
         int[] y = this.getYProjection();

@@ -13,8 +13,15 @@ import java.util.Arrays;
  * @author Архангельский Илья
  */
 public class ColorCube extends Cube
-{  
-    private RGB [] rgbIDs; 
+{
+    /**
+     * RGB индексы вершин
+     */
+    private RGB [] rgbIDs;
+    /**
+     * Создает куб с центром в точке (0,0,0) и длинной ребра edgeLength
+     * @param edgeLength длина ребра куба
+     */
     public ColorCube(int edgeLength)
     {
         super(edgeLength);
@@ -29,6 +36,10 @@ public class ColorCube extends Cube
         rgbIDs[7] = new RGB (1.0, 1.0, 1.0);
     }
 
+    /**
+     * Проецирует на экран грани куба
+     * @return спроецированные на UV плоскость (плоскость экрана) грани куба
+     */
     @Override
     public ColorSide[] getProjectedSides()
     {
@@ -112,6 +123,15 @@ public class ColorCube extends Cube
         
         Arrays.sort(sides);
         return sides;
+    }
+
+    /**
+     * Возвращает RGB индексы вершин
+     * @return массив RGB индексов вершин
+     */
+    public RGB[] getRgbIDs()
+    {
+        return rgbIDs;
     }
 
 }

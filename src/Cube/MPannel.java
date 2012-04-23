@@ -135,12 +135,13 @@ public class MPannel extends JPanel implements ActionListener
         g.setColor(Color.BLACK);
 
         /*Отладочный вывод */
-        g.drawString(" EDGE = " + cube.getEdgeLength() + " YAW = " + yaw + " PITCH = " + pitch + " ROLL = " + roll, 10, 20);
+        g.drawString("EDGE = " + cube.getEdgeLength() + " YAW = " + yaw + " PITCH = " + pitch + " ROLL = " + roll, 10, 20);
         ColorSide[] sides = cube.getProjectedSides();
         /** Смещаем в центр фрэйма*/
         int[] x = cube.getXProjection();
         int[] y = cube.getYProjection();
         int[] z = cube.getZProjection();
+        RGB [] rgbIDs = cube.getRgbIDs();
         for (int i = 0; i < sides.length; i++)
         {
             sides[i].move(this.getBounds().width / 2, this.getBounds().height / 2);
@@ -154,7 +155,7 @@ public class MPannel extends JPanel implements ActionListener
         /** Отрисовка*/
         for (int i = 0; i < sides.length ; i++)
         {
-            Side [] seg = sides[i].pieces(16);
+            Side [] seg = sides[i].pieces(20);
             for (int j=0;j<seg.length;j++)
             {
                 g.setColor(seg[j].getColor());
@@ -166,8 +167,8 @@ public class MPannel extends JPanel implements ActionListener
 
         for (int i = 0; i < 8; i++)
         {
-            g.setColor(Color.BLACK);
-            g.drawString("Vertex ID = " + i + " X = " + x[i] + " Y = " + y[i] + " Z = " + z[i], 10, 40 + i * 20);
+            g.setColor(new Color ((float)rgbIDs[i].getR(), (float) rgbIDs[i].getG(), (float) rgbIDs[i].getB()));
+            g.drawString("Vertex ID = " + (i+1) + " X = " + x[i] + " Y = " + y[i] + " Z = " + z[i], 10, 40 + i * 20);
             g.drawString("" + (i + 1), x[i], y[i]);
         }
     }

@@ -14,6 +14,12 @@ public class Vertex
     private double y;
     private double z;
 
+    /**
+     * Конструктор создает вершину с координатами в пространстве XYZ
+     * @param x координата по X
+     * @param y координата по Y
+     * @param z координата по Z
+     */
     public Vertex(double x, double y, double z)
     {
         this.x = x;
@@ -21,7 +27,7 @@ public class Vertex
         this.z = z;
     }
 
-    /** Геттеры сеттеры*/
+    /* Геттеры сеттеры*/
     public Vertex()
     {
     }
@@ -55,7 +61,11 @@ public class Vertex
     {
         this.z = z;
     }
-
+    /**
+     * Создание вершины из массива целых чисел
+     * @param vector массив X,Y,Z координат соотвественно
+     * @throws UnsupportedOperationException если длина массива не равна 3
+     */
     public Vertex(int[] vector) throws UnsupportedOperationException
     {
         if (vector.length != 3)
