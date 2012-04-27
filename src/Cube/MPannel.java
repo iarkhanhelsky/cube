@@ -3,17 +3,29 @@
  */
 package Cube;
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.ColorModel;
+import java.awt.image.Raster;
+import java.awt.image.SampleModel;
+import java.awt.image.WritableRaster;
+import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
+import java.awt.image.RenderedImage;
 import javax.swing.Timer;
 
 /**
@@ -24,13 +36,13 @@ public class MPannel extends JPanel implements ActionListener
 {
 
     /** начальное значение длины ребра куба */
-    private final int edge = 300;
+    private final int EDGE = 300;
     private ColorCube cube;
     /** Позиция мыши */
     private long mouseX = 0;
     private long mouseY = 0;
     /** Коэффициент для преобразования перемещения мыши в угол поворота */
-    private final long angleRatio = 3600;
+    private final long ANGLE_RATIO = 3600;
     private Timer timer;
     /** Коэффициент затухания вращения куба*/
     private final double G = 0.0098;
@@ -49,9 +61,9 @@ public class MPannel extends JPanel implements ActionListener
             long deltaX = mouseX - Math.round(e.getPoint().getX());
             long deltaY = mouseY - Math.round(e.getPoint().getY());
             // Преобразование перемещения мыши в уголы поворота куба
-            yaw += (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI / angleRatio;
-            pitch += deltaX * (2 * Math.PI) / angleRatio;
-            roll += -deltaY * (2 * Math.PI) / angleRatio;
+            yaw += (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI / ANGLE_RATIO;
+            pitch += deltaX * (2 * Math.PI) / ANGLE_RATIO;
+            roll += -deltaY * (2 * Math.PI) / ANGLE_RATIO;
             timer.restart();
         }
 
@@ -71,9 +83,9 @@ public class MPannel extends JPanel implements ActionListener
         {
             long deltaX = mouseX - Math.round(e.getPoint().getX());
             long deltaY = mouseY - Math.round(e.getPoint().getY());
-            yaw = (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI * 10 / (angleRatio);
-            pitch = deltaX * (2 * Math.PI) * 10 / (angleRatio);
-            roll = -deltaY * (2 * Math.PI) * 10 / (angleRatio);
+            yaw = (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI * 10 / (ANGLE_RATIO);
+            pitch = deltaX * (2 * Math.PI) * 10 / (ANGLE_RATIO);
+            roll = -deltaY * (2 * Math.PI) * 10 / (ANGLE_RATIO);
             cube.rotate(yaw, pitch, roll);
             repaint();
             mouseX = Math.round(e.getPoint().getX());
@@ -95,11 +107,11 @@ public class MPannel extends JPanel implements ActionListener
     public MPannel()
     {
         setBorder(BorderFactory.createLineBorder(Color.black));
-        timer = new Timer(10, this);
+        timer = new Timer(50, this);
         timer.start();
         addMouseMotionListener(new mouseAdapter());
         addMouseListener(new mouseAdapter());
-        cube = new ColorCube(edge);
+        cube = new ColorCube(EDGE);
         addMouseWheelListener(new mouseAdapter());
     }
 
@@ -133,7 +145,7 @@ public class MPannel extends JPanel implements ActionListener
         g.setColor(new Color(236, 236, 236));
         g.fillRect(0, 0, this.getBounds().width, this.getBounds().height);
         g.setColor(Color.BLACK);
-
+        cube.slice(Plane.R, 0.8);
         /*Отладочный вывод */
         g.drawString("EDGE = " + cube.getEdgeLength() + " YAW = " + yaw + " PITCH = " + pitch + " ROLL = " + roll, 10, 20);
         ColorSide[] sides = cube.getProjectedSides();
@@ -155,7 +167,7 @@ public class MPannel extends JPanel implements ActionListener
         /** Отрисовка*/
         for (int i = 0; i < sides.length ; i++)
         {
-            Side [] seg = sides[i].pieces(20);
+            Side [] seg = sides[i].pieces(20,20);
             for (int j=0;j<seg.length;j++)
             {
                 g.setColor(seg[j].getColor());
@@ -167,9 +179,10 @@ public class MPannel extends JPanel implements ActionListener
 
         for (int i = 0; i < 8; i++)
         {
-            g.setColor(new Color ((float)rgbIDs[i].getR(), (float) rgbIDs[i].getG(), (float) rgbIDs[i].getB()));
+            g.setColor(Color.BLACK);
             g.drawString("Vertex ID = " + (i+1) + " X = " + x[i] + " Y = " + y[i] + " Z = " + z[i], 10, 40 + i * 20);
             g.drawString("" + (i + 1), x[i], y[i]);
+
         }
     }
 }

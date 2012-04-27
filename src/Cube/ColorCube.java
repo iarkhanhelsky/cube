@@ -4,7 +4,6 @@
  */
 package Cube;
 
- 
 import java.util.Arrays;
 
 /**
@@ -14,10 +13,12 @@ import java.util.Arrays;
  */
 public class ColorCube extends Cube
 {
+
     /**
      * RGB индексы вершин
      */
-    private RGB [] rgbIDs;
+    private RGB[] rgbIDs;
+
     /**
      * Создает куб с центром в точке (0,0,0) и длинной ребра edgeLength
      * @param edgeLength длина ребра куба
@@ -26,14 +27,14 @@ public class ColorCube extends Cube
     {
         super(edgeLength);
         rgbIDs = new RGB[8];
-        rgbIDs[0] = new RGB (0.0, 1.0, 0.0);
-        rgbIDs[1] = new RGB (0.0, 0.0, 0.0);
-        rgbIDs[2] = new RGB (0.0, 0.0, 1.0);
-        rgbIDs[3] = new RGB (0.0, 1.0, 1.0);
-        rgbIDs[4] = new RGB (1.0, 1.0, 0.0);
-        rgbIDs[5] = new RGB (1.0, 0.0, 0.0);
-        rgbIDs[6] = new RGB (1.0, 0.0, 1.0);
-        rgbIDs[7] = new RGB (1.0, 1.0, 1.0);
+        rgbIDs[0] = new RGB(0.0, 1.0, 0.0);
+        rgbIDs[1] = new RGB(0.0, 0.0, 0.0);
+        rgbIDs[2] = new RGB(0.0, 0.0, 1.0);
+        rgbIDs[3] = new RGB(0.0, 1.0, 1.0);
+        rgbIDs[4] = new RGB(1.0, 1.0, 0.0);
+        rgbIDs[5] = new RGB(1.0, 0.0, 0.0);
+        rgbIDs[6] = new RGB(1.0, 0.0, 1.0);
+        rgbIDs[7] = new RGB(1.0, 1.0, 1.0);
     }
 
     /**
@@ -48,12 +49,30 @@ public class ColorCube extends Cube
         int[] z = this.getZProjection();
 
         ColorSide[] sides = new ColorSide[6];
-        RGB [] SideAColor = {rgbIDs[0],rgbIDs[1],rgbIDs[2],rgbIDs[3]};
-        RGB [] SideBColor = {rgbIDs[0],rgbIDs[1],rgbIDs[5],rgbIDs[4]};
-        RGB [] SideCColor = {rgbIDs[0],rgbIDs[3],rgbIDs[7],rgbIDs[4]};
-        RGB [] SideDColor = {rgbIDs[6],rgbIDs[5],rgbIDs[1],rgbIDs[2]};
-        RGB [] SideEColor = {rgbIDs[6],rgbIDs[7],rgbIDs[4],rgbIDs[5]};
-        RGB [] SideFColor = {rgbIDs[6],rgbIDs[2],rgbIDs[3],rgbIDs[7]};
+        RGB[] SideAColor =
+        {
+            rgbIDs[0], rgbIDs[1], rgbIDs[2], rgbIDs[3]
+        };
+        RGB[] SideBColor =
+        {
+            rgbIDs[0], rgbIDs[1], rgbIDs[5], rgbIDs[4]
+        };
+        RGB[] SideCColor =
+        {
+            rgbIDs[0], rgbIDs[3], rgbIDs[7], rgbIDs[4]
+        };
+        RGB[] SideDColor =
+        {
+            rgbIDs[6], rgbIDs[5], rgbIDs[1], rgbIDs[2]
+        };
+        RGB[] SideEColor =
+        {
+            rgbIDs[6], rgbIDs[7], rgbIDs[4], rgbIDs[5]
+        };
+        RGB[] SideFColor =
+        {
+            rgbIDs[6], rgbIDs[2], rgbIDs[3], rgbIDs[7]
+        };
         int[] SideAX =
         {
             x[0], x[1], x[2], x[3]
@@ -110,7 +129,7 @@ public class ColorCube extends Cube
         int SideDZCenter = (z[6] + z[1]) / 2;
         int SideEZCenter = (z[6] + z[4]) / 2;
         int SideFZCenter = (z[6] + z[3]) / 2;
-        
+
         sides[0] = new ColorSide(SideAZCenter, SideAX, SideAY, SideAColor);
         sides[1] = new ColorSide(SideBZCenter, SideBX, SideBY, SideBColor);
         sides[2] = new ColorSide(SideCZCenter, SideCX, SideCY, SideCColor);
@@ -120,7 +139,6 @@ public class ColorCube extends Cube
         /**Сортировка граней по Z координате. От нижних к верхним. Для правильной
          * очередности отрисовки
          */
-        
         Arrays.sort(sides);
         return sides;
     }
@@ -134,4 +152,25 @@ public class ColorCube extends Cube
         return rgbIDs;
     }
 
+    public void slice(Plane plane, double k)
+    {
+        switch (plane)
+        {
+            case R:
+            {
+                 
+
+                break;
+            }
+            case G:
+            {
+                break;
+            }
+            case B:
+            {
+                break;
+            }
+
+        }
+    }
 }

@@ -38,51 +38,51 @@ public class ColorSide extends Side {
      * на count сегментов по вертикали и count сегментов по горизонтали.
      * @return массив сегментов грани.
      */
-    public Side[] pieces (int count)
+    public Side[] pieces (int uCount, int vCount)
     {
-        Side[] pSides = new Side[count*count];
+        Side[] pSides = new Side[uCount*vCount];
         // Суть метода получения нужных координат сводится к параметрическому заданию прямой в пространстве.
-        for (int i=0;i<count;i++)
+        for (int i=0;i<uCount;i++)
         {
             // Вычисляем границы i-ого столбца из @count квадратных сегментов в ХY координатах
-            int xUp = (xPoints[2]-xPoints[1])*i/count+xPoints[1];
-            int yUp = (yPoints[2]-yPoints[1])*i/count+yPoints[1];
+            int xUp = (xPoints[2]-xPoints[1])*i/uCount+xPoints[1];
+            int yUp = (yPoints[2]-yPoints[1])*i/uCount+yPoints[1];
             
-            int xUpNxt = (xPoints[2]-xPoints[1])*(i+1)/count+xPoints[1];
-            int yUpNxt = (yPoints[2]-yPoints[1])*(i+1)/count+yPoints[1];
+            int xUpNxt = (xPoints[2]-xPoints[1])*(i+1)/uCount+xPoints[1];
+            int yUpNxt = (yPoints[2]-yPoints[1])*(i+1)/uCount+yPoints[1];
 
-            int xBot = (xPoints[3]-xPoints[0])*i/count+xPoints[0];
-            int yBot = (yPoints[3]-yPoints[0])*i/count+yPoints[0];          
+            int xBot = (xPoints[3]-xPoints[0])*i/uCount+xPoints[0];
+            int yBot = (yPoints[3]-yPoints[0])*i/uCount+yPoints[0];
 
-            int xBotNxt = (xPoints[3]-xPoints[0])*(i+1)/count+xPoints[0];
-            int yBotNxt = (yPoints[3]-yPoints[0])*(i+1)/count+yPoints[0];
+            int xBotNxt = (xPoints[3]-xPoints[0])*(i+1)/uCount+xPoints[0];
+            int yBotNxt = (yPoints[3]-yPoints[0])*(i+1)/uCount+yPoints[0];
 
             // И RGB координатах
-            RGB rgbUp = rgbIDs[2].diff(rgbIDs[1]).mulScalar((double)i / (double) count).sum(rgbIDs[1]);
-            RGB rgbBot = rgbIDs[3].diff(rgbIDs[0]).mulScalar((double) i/(double) count).sum(rgbIDs[0]);
+            RGB rgbUp = rgbIDs[2].diff(rgbIDs[1]).mulScalar((double)i / (double) uCount).sum(rgbIDs[1]);
+            RGB rgbBot = rgbIDs[3].diff(rgbIDs[0]).mulScalar((double) i/(double) uCount).sum(rgbIDs[0]);
             
-            for (int j=0;j<count;j++)
+            for (int j=0;j<vCount;j++)
             {
                 // В столбце выбираем j-ый квадтратный сегмент в XY координатах
-                int x00 = (xUp-xBot)*j/count+xBot;
-                int y00 = (yUp-yBot)*j/count+yBot;
+                int x00 = (xUp-xBot)*j/vCount+xBot;
+                int y00 = (yUp-yBot)*j/vCount+yBot;
 
-                int x01 =  (xUp-xBot)*(j+1)/count+xBot;
-                int y01 =  (yUp-yBot)*(j+1)/count+yBot;
+                int x01 =  (xUp-xBot)*(j+1)/vCount+xBot;
+                int y01 =  (yUp-yBot)*(j+1)/vCount+yBot;
 
-                int x02 =  (xUpNxt-xBotNxt)*(j+1)/count+xBotNxt;
-                int y02 =  (yUpNxt-yBotNxt)*(j+1)/count+yBotNxt;
+                int x02 =  (xUpNxt-xBotNxt)*(j+1)/vCount+xBotNxt;
+                int y02 =  (yUpNxt-yBotNxt)*(j+1)/vCount+yBotNxt;
 
-                int x03 =  (xUpNxt-xBotNxt)*j/count+xBotNxt;
-                int y03 =  (yUpNxt-yBotNxt)*j/count+yBotNxt;
+                int x03 =  (xUpNxt-xBotNxt)*j/vCount+xBotNxt;
+                int y03 =  (yUpNxt-yBotNxt)*j/vCount+yBotNxt;
 
                 int [] resX = {x00,x01,x02,x03};
                 int [] resY = {y00,y01,y02,y03};
 
                 // И RGB координатах
-                RGB clr = rgbUp.diff(rgbBot).mulScalar((double)j / (double) count).sum(rgbBot);
+                RGB clr = rgbUp.diff(rgbBot).mulScalar((double)j / (double) vCount).sum(rgbBot);
 
-                pSides[i*count+j] = new Side(zAxis, resX, resY, new Color ((float)clr.getR() ,(float) clr.getG(),(float)  clr.getB()));
+                pSides[i*vCount+j] = new Side(zAxis, resX, resY, new Color ((float)clr.getR() ,(float) clr.getG(),(float)  clr.getB()));
             }
         }
         return pSides;

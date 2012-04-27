@@ -15,19 +15,19 @@ public class Cube
     /**
      * Массив вершин
      */
-    private Vertex [] vertexs = new  Vertex[8];
+    protected  Vertex [] vertexes = new  Vertex[8];
     /**
      * Длина ребра
      */
-    private int edgeLength;
+    protected int edgeLength;
    /**
     * Переменная для проецирования. Дистанция до наблюдателя
     */
-    private int distance;
+    protected int distance;
     /**
      * Проекционный коэффициент
      */
-    private final int distCoeff = 8;
+    protected final int distCoeff = 8;
 
    /**
     * Создает куб с центром в точке (0,0,0) и длинной ребра edgeLength
@@ -38,14 +38,14 @@ public class Cube
         edgeLength /=2;
         this.edgeLength = edgeLength;
         
-        vertexs[0] = new Vertex(this.edgeLength, this.edgeLength, this.edgeLength);
-        vertexs[1] = new Vertex(-this.edgeLength, this.edgeLength, this.edgeLength);
-        vertexs[2] = new Vertex(-this.edgeLength, this.edgeLength, -this.edgeLength);
-        vertexs[3] = new Vertex(this.edgeLength, this.edgeLength, -this.edgeLength);
-        vertexs[4] = new Vertex(this.edgeLength, -this.edgeLength, this.edgeLength);
-        vertexs[5] = new Vertex(-this.edgeLength, -this.edgeLength, this.edgeLength);
-        vertexs[6] = new Vertex(-this.edgeLength, -this.edgeLength, -this.edgeLength);
-        vertexs[7] = new Vertex(this.edgeLength, -this.edgeLength, -this.edgeLength);
+        vertexes[0] = new Vertex(this.edgeLength, this.edgeLength, this.edgeLength);
+        vertexes[1] = new Vertex(-this.edgeLength, this.edgeLength, this.edgeLength);
+        vertexes[2] = new Vertex(-this.edgeLength, this.edgeLength, -this.edgeLength);
+        vertexes[3] = new Vertex(this.edgeLength, this.edgeLength, -this.edgeLength);
+        vertexes[4] = new Vertex(this.edgeLength, -this.edgeLength, this.edgeLength);
+        vertexes[5] = new Vertex(-this.edgeLength, -this.edgeLength, this.edgeLength);
+        vertexes[6] = new Vertex(-this.edgeLength, -this.edgeLength, -this.edgeLength);
+        vertexes[7] = new Vertex(this.edgeLength, -this.edgeLength, -this.edgeLength);
         distance =  distCoeff*this.edgeLength;
     }
        /**
@@ -79,7 +79,7 @@ public class Cube
         
         for (int i=0;i<8;i++)
         {
-            tmp[i] =  ((int) Math.round(vertexs[i].getX()*(distance-vertexs[i].getZ())/(distance+edgeLength)));
+            tmp[i] =  ((int) Math.round(vertexes[i].getX()*(distance-vertexes[i].getZ())/(distance+edgeLength)));
         }        
         return tmp;
     }
@@ -92,7 +92,7 @@ public class Cube
         int [] tmp = new int [8];
         for (int i=0;i<8;i++)
         {
-            tmp [i] = (int) Math.round(vertexs[i].getY()*(distance-vertexs[i].getZ())/(distance+edgeLength));
+            tmp [i] = (int) Math.round(vertexes[i].getY()*(distance-vertexes[i].getZ())/(distance+edgeLength));
         }
         return tmp;
     }
@@ -105,7 +105,7 @@ public class Cube
         int [] tmp = new int [8];
         for (int i=0;i<8;i++)
         {
-            tmp [i] = (int) Math.round(vertexs[i].getZ() );
+            tmp [i] = (int) Math.round(vertexes[i].getZ() );
         }
         return tmp;
     }
@@ -120,11 +120,11 @@ public class Cube
         /** Для поворота применяем соответсвующую матрицу преобразования координат*/
         for (int i=0; i<8;i++)
         {
-            double newX = vertexs[i].getX()*cos-vertexs[i].getY()*sin;
-            double newY = vertexs[i].getX()*sin+vertexs[i].getY()*cos;
-            double newZ = vertexs[i].getZ();
+            double newX = vertexes[i].getX()*cos-vertexes[i].getY()*sin;
+            double newY = vertexes[i].getX()*sin+vertexes[i].getY()*cos;
+            double newZ = vertexes[i].getZ();
 
-            vertexs[i] = new Vertex(newX, newY, newZ);
+            vertexes[i] = new Vertex(newX, newY, newZ);
         }
     }
     /**
@@ -138,11 +138,11 @@ public class Cube
         /** Для поворота применяем соответсвующую матрицу преобразования координат*/
         for (int i=0;i<8;i++)
         {
-            double newX = vertexs[i].getX()*cos + vertexs[i].getZ()*sin;
-            double newY = vertexs[i].getY();
-            double newZ = -vertexs[i].getX()*sin+vertexs[i].getZ()*cos;
+            double newX = vertexes[i].getX()*cos + vertexes[i].getZ()*sin;
+            double newY = vertexes[i].getY();
+            double newZ = -vertexes[i].getX()*sin+vertexes[i].getZ()*cos;
 
-            vertexs[i] = new Vertex (newX,newY,newZ);
+            vertexes[i] = new Vertex (newX,newY,newZ);
         }
     }
    /**
@@ -156,11 +156,11 @@ public class Cube
         /** Для поворота применяем соответсвующую матрицу преобразования координат*/
         for (int i=0;i<8;i++)
         {
-            double newX = vertexs[i].getX();
-            double newY = vertexs[i].getY()*cos - vertexs[i].getZ()*sin;
-            double newZ = vertexs[i].getY()*sin + vertexs[i].getZ()*cos;
+            double newX = vertexes[i].getX();
+            double newY = vertexes[i].getY()*cos - vertexes[i].getZ()*sin;
+            double newZ = vertexes[i].getY()*sin + vertexes[i].getZ()*cos;
 
-            vertexs[i] = new Vertex(newX, newY,newZ);
+            vertexes[i] = new Vertex(newX, newY,newZ);
         }        
     }
     /**
@@ -181,7 +181,7 @@ public class Cube
         edgeLength = edgeLength/2;
         for (int i=0;i<8;i++)
         {
-            vertexs[i].setNorm(edgeLength*Math.sqrt(3));
+            vertexes[i].setNorm(edgeLength*Math.sqrt(3));
         }
         this.edgeLength = edgeLength;
         distance =  distCoeff*this.edgeLength;
