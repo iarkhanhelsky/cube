@@ -1,6 +1,3 @@
-/**
- * @author Архангельский Илья
- */
 package Cube;
 
 import java.awt.Color;
@@ -8,7 +5,7 @@ import java.util.Arrays;
 
 /**
  * Реализация класса "Куб"
- * @author lucian
+ * @author Архангельский Илья
  */
 public class Cube
 {

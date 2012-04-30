@@ -7,8 +7,8 @@ package Cube;
 import java.util.Arrays;
 
 /**
- * Класс "Цветовой куб"
- * Служит для разбиения сторон на сегменты, определение цвета сегмента
+ * Класс "Цветовой куб".
+ * Служит для разбиения сторон на сегменты, определение цвета сегмента.
  * @author Архангельский Илья
  */
 public class ColorCube extends Cube
@@ -150,27 +150,5 @@ public class ColorCube extends Cube
     public RGB[] getRgbIDs()
     {
         return rgbIDs;
-    }
-
-    public void slice(Plane plane, double k)
-    {
-        switch (plane)
-        {
-            case R:
-            {
-                 
-
-                break;
-            }
-            case G:
-            {
-                break;
-            }
-            case B:
-            {
-                break;
-            }
-
-        }
     }
 }

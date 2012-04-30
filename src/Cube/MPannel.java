@@ -3,29 +3,22 @@
  */
 package Cube;
 
-import java.awt.Rectangle;
+
 import java.awt.event.ActionEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.ColorModel;
-import java.awt.image.Raster;
-import java.awt.image.SampleModel;
-import java.awt.image.WritableRaster;
-import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.Shape;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
-import java.awt.image.RenderedImage;
+import javax.swing.JLabel;
+import javax.swing.JSlider;
 import javax.swing.Timer;
 
 /**
@@ -35,6 +28,9 @@ import javax.swing.Timer;
 public class MPannel extends JPanel implements ActionListener
 {
 
+    private final int SEGMENTS_MAX = 20;
+    private final int SEGMENTS_MIN = 2;
+    private final int SEGMENTS_INIT = 8;
     /** начальное значение длины ребра куба */
     private final int EDGE = 300;
     private ColorCube cube;
@@ -43,6 +39,7 @@ public class MPannel extends JPanel implements ActionListener
     private long mouseY = 0;
     /** Коэффициент для преобразования перемещения мыши в угол поворота */
     private final long ANGLE_RATIO = 3600;
+    private  long angleRatio = 3600;
     private Timer timer;
     /** Коэффициент затухания вращения куба*/
     private final double G = 0.0098;
@@ -51,6 +48,13 @@ public class MPannel extends JPanel implements ActionListener
     private double yaw = 0;
     private double roll = 0;
     private double pitch = 0;
+
+    private JSlider segments;
+    private JPanel sliderPannel = new JPanel();
+
+
+
+   
 
     public class mouseAdapter extends MouseAdapter
     {
@@ -61,9 +65,9 @@ public class MPannel extends JPanel implements ActionListener
             long deltaX = mouseX - Math.round(e.getPoint().getX());
             long deltaY = mouseY - Math.round(e.getPoint().getY());
             // Преобразование перемещения мыши в уголы поворота куба
-            yaw += (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI / ANGLE_RATIO;
-            pitch += deltaX * (2 * Math.PI) / ANGLE_RATIO;
-            roll += -deltaY * (2 * Math.PI) / ANGLE_RATIO;
+            yaw += (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI / angleRatio;
+            pitch += deltaX * (2 * Math.PI) / angleRatio;
+            roll += -deltaY * (2 * Math.PI) / angleRatio;
             timer.restart();
         }
 
@@ -73,6 +77,7 @@ public class MPannel extends JPanel implements ActionListener
             if (cube.getEdgeLength() - 10 * e.getWheelRotation() > 0)
             {
                 cube.setEdgeLength(cube.getEdgeLength() - 10 * e.getWheelRotation());
+            
                 repaint();
             }
 
@@ -83,9 +88,9 @@ public class MPannel extends JPanel implements ActionListener
         {
             long deltaX = mouseX - Math.round(e.getPoint().getX());
             long deltaY = mouseY - Math.round(e.getPoint().getY());
-            yaw = (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI * 10 / (ANGLE_RATIO);
-            pitch = deltaX * (2 * Math.PI) * 10 / (ANGLE_RATIO);
-            roll = -deltaY * (2 * Math.PI) * 10 / (ANGLE_RATIO);
+            yaw = (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI * 10 / (angleRatio);
+            pitch = deltaX * (2 * Math.PI) * 10 / (angleRatio);
+            roll = -deltaY * (2 * Math.PI) * 10 / (angleRatio);
             cube.rotate(yaw, pitch, roll);
             repaint();
             mouseX = Math.round(e.getPoint().getX());
@@ -106,6 +111,25 @@ public class MPannel extends JPanel implements ActionListener
 
     public MPannel()
     {
+        segments = new JSlider (JSlider.HORIZONTAL,SEGMENTS_MIN,SEGMENTS_MAX,SEGMENTS_INIT);
+
+        segments.setMajorTickSpacing(2);
+        segments.setBounds(new Rectangle (this.getBounds().width, 10));
+
+        segments.setMinorTickSpacing(1);
+        segments.setPaintTicks(true);
+
+        segments.setPaintLabels(true);
+        segments.setBounds(10, 10, 10, this.getBounds().width);
+
+
+        sliderPannel.setLayout(new  GridLayout(2, 1, 5, 5));
+        
+        sliderPannel.add (new JLabel("Слои"));
+        sliderPannel.add (segments);
+
+
+        add (sliderPannel);
         setBorder(BorderFactory.createLineBorder(Color.black));
         timer = new Timer(50, this);
         timer.start();
@@ -113,6 +137,7 @@ public class MPannel extends JPanel implements ActionListener
         addMouseListener(new mouseAdapter());
         cube = new ColorCube(EDGE);
         addMouseWheelListener(new mouseAdapter());
+    
     }
 
     public void actionPerformed(ActionEvent e)
@@ -137,23 +162,25 @@ public class MPannel extends JPanel implements ActionListener
     @Override
     protected void paintComponent(Graphics gOrig)
     {
-        super.paintComponent(gOrig);
-
+        
+        super.paintComponent(gOrig);        
         Graphics2D g = (Graphics2D) gOrig;
+        this.setDoubleBuffered(true);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(new Color(236, 236, 236));
         g.fillRect(0, 0, this.getBounds().width, this.getBounds().height);
         g.setColor(Color.BLACK);
-        cube.slice(Plane.R, 0.8);
-        /*Отладочный вывод */
-        g.drawString("EDGE = " + cube.getEdgeLength() + " YAW = " + yaw + " PITCH = " + pitch + " ROLL = " + roll, 10, 20);
+
+//        /*Отладочный вывод */
+//        g.drawString("EDGE = " + cube.getEdgeLength() + " YAW = " + yaw + " PITCH = " + pitch + " ROLL = " + roll, 10, 20);
+        
         ColorSide[] sides = cube.getProjectedSides();
         /** Смещаем в центр фрэйма*/
         int[] x = cube.getXProjection();
         int[] y = cube.getYProjection();
         int[] z = cube.getZProjection();
-        RGB [] rgbIDs = cube.getRgbIDs();
+        
         for (int i = 0; i < sides.length; i++)
         {
             sides[i].move(this.getBounds().width / 2, this.getBounds().height / 2);
@@ -167,7 +194,7 @@ public class MPannel extends JPanel implements ActionListener
         /** Отрисовка*/
         for (int i = 0; i < sides.length ; i++)
         {
-            Side [] seg = sides[i].pieces(20,20);
+            Side [] seg = sides[i].pieces(segments.getValue(),segments.getValue());
             for (int j=0;j<seg.length;j++)
             {
                 g.setColor(seg[j].getColor());
@@ -177,12 +204,13 @@ public class MPannel extends JPanel implements ActionListener
         }
         /* Отладочный вывод */
 
-        for (int i = 0; i < 8; i++)
-        {
-            g.setColor(Color.BLACK);
-            g.drawString("Vertex ID = " + (i+1) + " X = " + x[i] + " Y = " + y[i] + " Z = " + z[i], 10, 40 + i * 20);
-            g.drawString("" + (i + 1), x[i], y[i]);
-
-        }
+//        for (int i = 0; i < 8; i++)
+//        {
+//            g.setColor(Color.BLACK);
+//            g.drawString("Vertex ID = " + (i+1) + " X = " + x[i] + " Y = " + y[i] + " Z = " + z[i], 10, 40 + i * 20);
+//            g.drawString("" + (i + 1), x[i], y[i]);
+//
+//        }
+        
     }
 }

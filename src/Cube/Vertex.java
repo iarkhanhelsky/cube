@@ -4,9 +4,9 @@
 package Cube;
 
 /**
- * Реализация класса "Вершина"
- * Вершина задается вектором с центром в точке (0,0,0)
- * @author Архангельский Илья
+ * Реализация класса "Вершина".
+ * Вершина задается вектором с центром в точке (0,0,0).
+ * @author Архангельский Илья.
  */
 public class Vertex
 {
@@ -31,32 +31,52 @@ public class Vertex
     public Vertex()
     {
     }
-
+    /**
+     * Получить X координату
+     * @return
+     */
     public double getX()
     {
         return x;
     }
 
+    /**
+     * Установить X координату
+     * @param x
+     */
+
     public void setX(double x)
     {
         this.x = x;
     }
-
+    /**
+     * Получить Y координату
+     * @return
+     */
     public double getY()
     {
         return y;
     }
-
+    /**
+     * Установить Y координату
+     * @param y
+     */
     public void setY(double y)
     {
         this.y = y;
     }
-
+    /**
+     * Получить Z координату
+     * @return
+     */
     public double getZ()
     {
         return z;
     }
-
+    /**
+     * Установить Z координату
+     * @param z
+     */
     public void setZ(double z)
     {
         this.z = z;
@@ -77,7 +97,10 @@ public class Vertex
         y = vector[1];
         z = vector[2];
     }
-    /* Получить целочисленные значения вектора */
+   /**
+    * Получить вектор с целочисленными координатами
+    * @return 3 элементный массив целых частей координат вектора
+    */
     public int[] getIntVector()
     {
         int[] tmp =
@@ -86,12 +109,19 @@ public class Vertex
         };
         return tmp;
     }
-    /** Получить норму вектора*/
+    /**
+     * Получить норму вектора 
+     * @return
+     */
     public double getNorm()
     {
         return Math.sqrt(x * x + y * y + z * z);
     }
-    /** Установить норму вектора*/
+    /**
+     * Установить норму вектора
+     * @param n новая норма вектора
+     */
+
     public void setNorm(double n)
     {
         if (n != 0)
