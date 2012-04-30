@@ -65,7 +65,7 @@ public class MPannel extends JPanel implements ActionListener
             long deltaX = mouseX - Math.round(e.getPoint().getX());
             long deltaY = mouseY - Math.round(e.getPoint().getY());
             // Преобразование перемещения мыши в уголы поворота куба
-            yaw += (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI / angleRatio;
+            yaw += (-deltaX   / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI / angleRatio;
             pitch += deltaX * (2 * Math.PI) / angleRatio;
             roll += -deltaY * (2 * Math.PI) / angleRatio;
             timer.restart();
@@ -88,7 +88,7 @@ public class MPannel extends JPanel implements ActionListener
         {
             long deltaX = mouseX - Math.round(e.getPoint().getX());
             long deltaY = mouseY - Math.round(e.getPoint().getY());
-            yaw = (-deltaX * (deltaY == 0 ? 0 : 1) / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI * 10 / (angleRatio);
+            yaw = (-deltaX   / (deltaY == 0 ? 1 : deltaY)) * 2 * Math.PI * 10 / (angleRatio);
             pitch = deltaX * (2 * Math.PI) * 10 / (angleRatio);
             roll = -deltaY * (2 * Math.PI) * 10 / (angleRatio);
             cube.rotate(yaw, pitch, roll);

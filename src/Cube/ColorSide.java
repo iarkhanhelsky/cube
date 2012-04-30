@@ -60,6 +60,8 @@ public class ColorSide extends Side {
             // И RGB координатах
             RGB rgbUp = rgbIDs[2].diff(rgbIDs[1]).mulScalar((double)i / (double) uCount).sum(rgbIDs[1]);
             RGB rgbBot = rgbIDs[3].diff(rgbIDs[0]).mulScalar((double) i/(double) uCount).sum(rgbIDs[0]);
+            RGB rgbUpNxt = rgbIDs[2].diff(rgbIDs[1]).mulScalar((double)(i+1) / (double) uCount).sum(rgbIDs[1]);
+            RGB rgbBotNxt = rgbIDs[3].diff(rgbIDs[0]).mulScalar((double) (i+1)/(double) uCount).sum(rgbIDs[0]);
             
             for (int j=0;j<vCount;j++)
             {
@@ -81,8 +83,10 @@ public class ColorSide extends Side {
 
                 // И RGB координатах
                 RGB clr = rgbUp.diff(rgbBot).mulScalar((double)j / (double) vCount).sum(rgbBot);
+                RGB clrNxt = rgbUpNxt.diff(rgbBotNxt).mulScalar((double)(j+1) / (double) vCount).sum(rgbBot);
+                RGB realClr = clr.sum(clrNxt).mulScalar(0.5);
 
-                pSides[i*vCount+j] = new Side(zAxis, resX, resY, new Color ((float)clr.getR() ,(float) clr.getG(),(float)  clr.getB()));
+                pSides[i*vCount+j] = new Side(zAxis, resX, resY, new Color ((float)realClr.getR() ,(float) realClr.getG(),(float)  realClr.getB()));
             }
         }
         return pSides;
