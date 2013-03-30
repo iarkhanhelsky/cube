@@ -1,40 +1,41 @@
 /**
  * @author Архангельский Илья
  */
-package Cube;
+package org.dmlaps.cube;
 
-import java.awt.Color;
+import java.awt.*;
 
 /**
  * Реализация класса "Грань".
  * Вообще говоря класс служит лишь для отрисовки граней в правильной последовательности.
  * от нижних к верхним.
- * @author Архангельский Илья
+ *
+ * @author Ilya Arkhanhelsky
  */
 public class Side implements Comparable<Side>
 {
-   /**
-    * центр грани по Z
-    */
-    protected  int zAxis;
     /**
-     *  массив точек описывающих Х координаты вершин грани
+     * центр грани по Z
      */
-    protected  int[] xPoints;
+    protected int zAxis;
+    /**
+     * массив точек описывающих Х координаты вершин грани
+     */
+    protected int[] xPoints;
     /**
      * массив точек описывающих Y координаты вершин грани
      */
-    protected  int[] yPoints;
+    protected int[] yPoints;
     /**
      * Цвет грани
      */
-    protected  Color color;
+    protected Color color;
+
     /**
-     *
-     * @param zAxis центр грани по Z
+     * @param zAxis   центр грани по Z
      * @param xPoints массив точек описывающих Х координаты вершин грани
      * @param yPoints массив точек описывающих Y координаты вершин грани
-     * @param color цвет грани
+     * @param color   цвет грани
      */
     public Side(int zAxis, int[] xPoints, int[] yPoints, Color color)
     {
@@ -43,16 +44,20 @@ public class Side implements Comparable<Side>
         this.yPoints = yPoints;
         this.color = color;
     }
+
     /**
      * Установить цвет грани
+     *
      * @param color
      */
     public void setColor(Color color)
     {
         this.color = color;
     }
+
     /**
      * Сравнить две грани. Сравнение проводится по Z координате
+     *
      * @param o
      * @return 0 если Z координаты совпадают, значение большее 0, если Z координата объекта сравнения больше, значение меньшее 0, во всех остальных случаях
      */
@@ -61,8 +66,10 @@ public class Side implements Comparable<Side>
         /** Сравниваем по Z координате */
         return o.zAxis - zAxis;
     }
+
     /**
      * Получить цвет грани
+     *
      * @return цвет грани
      */
     public Color getColor()
@@ -70,19 +77,25 @@ public class Side implements Comparable<Side>
         return color;
     }
 
-    /** Массив Х координат вершин */
+    /**
+     * Массив Х координат вершин
+     */
     public int[] getXPoints()
     {
         return xPoints;
     }
 
-    /** Массив Y координат вершин */
+    /**
+     * Массив Y координат вершин
+     */
     public int[] getYPoints()
     {
         return yPoints;
     }
 
-    /** Сдвинуть при проецировании по Х и У */
+    /**
+     * Сдвинуть при проецировании по Х и У
+     */
     public void move(int x, int y)
     {
         for (int i = 0; i < xPoints.length; i++)

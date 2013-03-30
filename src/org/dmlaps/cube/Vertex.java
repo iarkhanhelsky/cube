@@ -1,12 +1,13 @@
 /**
  * @author Архангельский Илья
  */
-package Cube;
+package org.dmlaps.cube;
 
 /**
  * Реализация класса "Вершина".
  * Вершина задается вектором с центром в точке (0,0,0).
- * @author Архангельский Илья.
+ *
+ * @author Ilya Arkhanhelsky.
  */
 public class Vertex
 {
@@ -16,6 +17,7 @@ public class Vertex
 
     /**
      * Конструктор создает вершину с координатами в пространстве XYZ
+     *
      * @param x координата по X
      * @param y координата по Y
      * @param z координата по Z
@@ -27,12 +29,10 @@ public class Vertex
         this.z = z;
     }
 
-    /* Геттеры сеттеры*/
-    public Vertex()
-    {
-    }
+
     /**
      * Получить X координату
+     *
      * @return
      */
     public double getX()
@@ -40,88 +40,50 @@ public class Vertex
         return x;
     }
 
-    /**
-     * Установить X координату
-     * @param x
-     */
 
-    public void setX(double x)
-    {
-        this.x = x;
-    }
     /**
      * Получить Y координату
+     *
      * @return
      */
     public double getY()
     {
         return y;
     }
-    /**
-     * Установить Y координату
-     * @param y
-     */
-    public void setY(double y)
-    {
-        this.y = y;
-    }
+
+
     /**
      * Получить Z координату
+     *
      * @return
      */
     public double getZ()
     {
         return z;
     }
-    /**
-     * Установить Z координату
-     * @param z
-     */
-    public void setZ(double z)
-    {
-        this.z = z;
-    }
+
     /**
      * Создание вершины из массива целых чисел
+     *
      * @param vector массив X,Y,Z координат соотвественно
      * @throws UnsupportedOperationException если длина массива не равна 3
      */
-    public Vertex(int[] vector) throws UnsupportedOperationException
-    {
-        if (vector.length != 3)
-        {
-            throw new UnsupportedOperationException("Wrong Dimetion!");
-        }
 
-        x = vector[0];
-        y = vector[1];
-        z = vector[2];
-    }
-   /**
-    * Получить вектор с целочисленными координатами
-    * @return 3 элементный массив целых частей координат вектора
-    */
-    public int[] getIntVector()
-    {
-        int[] tmp =
-        {
-            (int) Math.round(x), (int) Math.round(y), (int) Math.round(z)
-        };
-        return tmp;
-    }
     /**
-     * Получить норму вектора 
+     * Получить норму вектора
+     *
      * @return
      */
     public double getNorm()
     {
         return Math.sqrt(x * x + y * y + z * z);
     }
+
     /**
      * Установить норму вектора
+     *
      * @param n новая норма вектора
      */
-
     public void setNorm(double n)
     {
         if (n != 0)

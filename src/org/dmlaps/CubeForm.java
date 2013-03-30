@@ -1,15 +1,13 @@
 /**
  * @author Архангельский Илья
  */
-package Cube;
+package org.dmlaps;
 
-import java.awt.Dimension;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import java.awt.*;
 
 /**
- *
- * @author Архангельский Илья 
+ * @author Ilya Arkhanhelsky
  */
 public class CubeForm
 {
@@ -29,7 +27,7 @@ public class CubeForm
     {
         JFrame f = new JFrame("Cube");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setBounds(100,100 , 1000, 1000);
+        f.setBounds(100, 100, 1000, 1000);
         f.setMinimumSize(new Dimension(800, 800));
         f.add(new MPannel());
 
