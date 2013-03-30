@@ -1,6 +1,6 @@
 package org.dmlaps.cube;
 
-import org.dmlaps.gfx.cube.ColorRGB;
+import org.dmlaps.gfx.ColorRGB;
 
 import java.awt.*;
 
