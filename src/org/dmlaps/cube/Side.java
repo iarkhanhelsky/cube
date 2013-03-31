@@ -92,19 +92,4 @@ public class Side implements Comparable<Side>
     {
         return yPoints;
     }
-
-    /**
-     * Сдвинуть при проецировании по Х и У
-     */
-    public void move(int x, int y)
-    {
-        for (int i = 0; i < xPoints.length; i++)
-        {
-            xPoints[i] += x;
-        }
-        for (int i = 0; i < yPoints.length; i++)
-        {
-            yPoints[i] += y;
-        }
-    }
 }
