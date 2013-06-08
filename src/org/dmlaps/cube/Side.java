@@ -3,7 +3,8 @@
  */
 package org.dmlaps.cube;
 
-import java.awt.*;
+
+import org.dmlaps.gfx.Color;
 
 /**
  * Реализация класса "Грань".

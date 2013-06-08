@@ -9,11 +9,12 @@ package org.dmlaps.cube;
  *
  * @author Ilya Arkhanhelsky.
  */
-public class Vertex
+public class Vertex extends Vector
 {
-    private double x;
-    private double y;
-    private double z;
+
+    public static final int X = 0;
+    private static final int Y = 1;
+    private static final int Z = 2;
 
     /**
      * Конструктор создает вершину с координатами в пространстве XYZ
@@ -24,20 +25,17 @@ public class Vertex
      */
     public Vertex(double x, double y, double z)
     {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        super(x, y, z);
     }
-
 
     /**
      * Получить X координату
      *
      * @return
      */
-    public double getX()
+    public double x()
     {
-        return x;
+        return get(X);
     }
 
 
@@ -46,9 +44,9 @@ public class Vertex
      *
      * @return
      */
-    public double getY()
+    public double y()
     {
-        return y;
+        return get(Y);
     }
 
 
@@ -57,27 +55,11 @@ public class Vertex
      *
      * @return
      */
-    public double getZ()
+    public double z()
     {
-        return z;
+        return get(Z);
     }
 
-    /**
-     * Создание вершины из массива целых чисел
-     *
-     * @param vector массив X,Y,Z координат соотвественно
-     * @throws UnsupportedOperationException если длина массива не равна 3
-     */
-
-    /**
-     * Получить норму вектора
-     *
-     * @return
-     */
-    public double getNorm()
-    {
-        return Math.sqrt(x * x + y * y + z * z);
-    }
 
     /**
      * Установить норму вектора
@@ -86,12 +68,7 @@ public class Vertex
      */
     public void setNorm(double n)
     {
-        if (n != 0)
-        {
-            double old = getNorm();
-            x = x * n / old;
-            y = y * n / old;
-            z = z * n / old;
-        }
+        double mul = n / norm();
+        mul(mul);
     }
 }

@@ -1,6 +1,6 @@
 package org.dmlaps.cube;
 
-import org.dmlaps.gfx.ColorRGB;
+import org.dmlaps.gfx.Color;
 
 import java.util.Arrays;
 
@@ -16,7 +16,7 @@ public class ColorCube extends Cube
     /**
      * RGB индексы вершин
      */
-    private ColorRGB[] rgbIDs;
+    private Color[] rgbIDs;
 
     /**
      * Создает куб с центром в точке (0,0,0) и длинной ребра edgeLength
@@ -26,15 +26,15 @@ public class ColorCube extends Cube
     public ColorCube(int edgeLength)
     {
         super(edgeLength);
-        rgbIDs = new ColorRGB[8];
-        rgbIDs[0] = new ColorRGB(0.0, 1.0, 0.0);
-        rgbIDs[1] = new ColorRGB(0.0, 0.0, 0.0);
-        rgbIDs[2] = new ColorRGB(0.0, 0.0, 1.0);
-        rgbIDs[3] = new ColorRGB(0.0, 1.0, 1.0);
-        rgbIDs[4] = new ColorRGB(1.0, 1.0, 0.0);
-        rgbIDs[5] = new ColorRGB(1.0, 0.0, 0.0);
-        rgbIDs[6] = new ColorRGB(1.0, 0.0, 1.0);
-        rgbIDs[7] = new ColorRGB(1.0, 1.0, 1.0);
+        rgbIDs = new Color[8];
+        rgbIDs[0] = new Color(0.0, 1.0, 0.0);
+        rgbIDs[1] = new Color(0.0, 0.0, 0.0);
+        rgbIDs[2] = new Color(0.0, 0.0, 1.0);
+        rgbIDs[3] = new Color(0.0, 1.0, 1.0);
+        rgbIDs[4] = new Color(1.0, 1.0, 0.0);
+        rgbIDs[5] = new Color(1.0, 0.0, 0.0);
+        rgbIDs[6] = new Color(1.0, 0.0, 1.0);
+        rgbIDs[7] = new Color(1.0, 1.0, 1.0);
     }
 
     /**
@@ -50,27 +50,27 @@ public class ColorCube extends Cube
         int[] z = this.getZProjection();
 
         ColorSide[] sides = new ColorSide[6];
-        ColorRGB[] SideAColor =
+        Color[] SideAColor =
                 {
                         rgbIDs[0], rgbIDs[1], rgbIDs[2], rgbIDs[3]
                 };
-        ColorRGB[] SideBColor =
+        Color[] SideBColor =
                 {
                         rgbIDs[0], rgbIDs[1], rgbIDs[5], rgbIDs[4]
                 };
-        ColorRGB[] SideCColor =
+        Color[] SideCColor =
                 {
                         rgbIDs[0], rgbIDs[3], rgbIDs[7], rgbIDs[4]
                 };
-        ColorRGB[] SideDColor =
+        Color[] SideDColor =
                 {
                         rgbIDs[6], rgbIDs[5], rgbIDs[1], rgbIDs[2]
                 };
-        ColorRGB[] SideEColor =
+        Color[] SideEColor =
                 {
                         rgbIDs[6], rgbIDs[7], rgbIDs[4], rgbIDs[5]
                 };
-        ColorRGB[] SideFColor =
+        Color[] SideFColor =
                 {
                         rgbIDs[6], rgbIDs[2], rgbIDs[3], rgbIDs[7]
                 };

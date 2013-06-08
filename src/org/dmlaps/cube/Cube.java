@@ -1,6 +1,8 @@
 package org.dmlaps.cube;
 
-import java.awt.*;
+
+import org.dmlaps.gfx.Color;
+
 import java.util.Arrays;
 
 /**
@@ -82,7 +84,7 @@ public class Cube
 
         for (int i = 0; i < 8; i++)
         {
-            tmp[i] = ((int) Math.round(vertexes[i].getX() * (distance - vertexes[i].getZ()) / (distance + edgeLength)));
+            tmp[i] = ((int) Math.round(vertexes[i].x() * (distance - vertexes[i].z()) / (distance + edgeLength)));
         }
         return tmp;
     }
@@ -97,7 +99,7 @@ public class Cube
         int[] tmp = new int[8];
         for (int i = 0; i < 8; i++)
         {
-            tmp[i] = (int) Math.round(vertexes[i].getY() * (distance - vertexes[i].getZ()) / (distance + edgeLength));
+            tmp[i] = (int) Math.round(vertexes[i].y() * (distance - vertexes[i].z()) / (distance + edgeLength));
         }
         return tmp;
     }
@@ -112,7 +114,7 @@ public class Cube
         int[] tmp = new int[8];
         for (int i = 0; i < 8; i++)
         {
-            tmp[i] = (int) Math.round(vertexes[i].getZ());
+            tmp[i] = (int) Math.round(vertexes[i].z());
         }
         return tmp;
     }
@@ -129,9 +131,9 @@ public class Cube
         /** Для поворота применяем соответсвующую матрицу преобразования координат*/
         for (int i = 0; i < 8; i++)
         {
-            double newX = vertexes[i].getX() * cos - vertexes[i].getY() * sin;
-            double newY = vertexes[i].getX() * sin + vertexes[i].getY() * cos;
-            double newZ = vertexes[i].getZ();
+            double newX = vertexes[i].x() * cos - vertexes[i].y() * sin;
+            double newY = vertexes[i].x() * sin + vertexes[i].y() * cos;
+            double newZ = vertexes[i].z();
 
             vertexes[i] = new Vertex(newX, newY, newZ);
         }
@@ -149,9 +151,9 @@ public class Cube
         /** Для поворота применяем соответсвующую матрицу преобразования координат*/
         for (int i = 0; i < 8; i++)
         {
-            double newX = vertexes[i].getX() * cos + vertexes[i].getZ() * sin;
-            double newY = vertexes[i].getY();
-            double newZ = -vertexes[i].getX() * sin + vertexes[i].getZ() * cos;
+            double newX = vertexes[i].x() * cos + vertexes[i].z() * sin;
+            double newY = vertexes[i].y();
+            double newZ = -vertexes[i].x() * sin + vertexes[i].z() * cos;
 
             vertexes[i] = new Vertex(newX, newY, newZ);
         }
@@ -169,9 +171,9 @@ public class Cube
         /** Для поворота применяем соответсвующую матрицу преобразования координат*/
         for (int i = 0; i < 8; i++)
         {
-            double newX = vertexes[i].getX();
-            double newY = vertexes[i].getY() * cos - vertexes[i].getZ() * sin;
-            double newZ = vertexes[i].getY() * sin + vertexes[i].getZ() * cos;
+            double newX = vertexes[i].x();
+            double newY = vertexes[i].y() * cos - vertexes[i].z() * sin;
+            double newZ = vertexes[i].y() * sin + vertexes[i].z() * cos;
 
             vertexes[i] = new Vertex(newX, newY, newZ);
         }

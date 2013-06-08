@@ -1,8 +1,6 @@
 package org.dmlaps.cube;
 
-import org.dmlaps.gfx.ColorRGB;
-
-import java.awt.*;
+import org.dmlaps.gfx.Color;
 
 /**
  * Класс "Цветовая грань".
@@ -13,9 +11,9 @@ import java.awt.*;
 public class ColorSide extends Side
 {
     /**
-     * ColorRGB индексы вершин
+     * Color индексы вершин
      */
-    private ColorRGB[] rgbIDs;
+    private Color[] rgbIDs;
 
     /**
      * Построить грань с цветовыми индексами вершин
@@ -23,18 +21,18 @@ public class ColorSide extends Side
      * @param zAxis   центр грани по Z
      * @param xPoints массив точек описывающих Х координаты вершин грани
      * @param yPoints массив точек описывающих Y координаты вершин грани
-     * @param rgbIDs  массив ColorRGB индексов соответсвующих вершинам грани.
+     * @param rgbIDs  массив Color индексов соответсвующих вершинам грани.
      */
 
-    public ColorSide(int zAxis, int[] xPoints, int[] yPoints, ColorRGB[] rgbIDs)
+    public ColorSide(int zAxis, int[] xPoints, int[] yPoints, org.dmlaps.gfx.Color[] rgbIDs)
     {
         super(zAxis, xPoints, yPoints, Color.BLACK);
         this.rgbIDs = rgbIDs;
-        ColorRGB clr = new ColorRGB((rgbIDs[0].getR() + rgbIDs[1].getR() + rgbIDs[2].getR() + rgbIDs[3].getR()) / 4,
-                (rgbIDs[0].getG() + rgbIDs[1].getG() + rgbIDs[2].getG() + rgbIDs[3].getG()) / 4,
-                (rgbIDs[0].getB() + rgbIDs[1].getB() + rgbIDs[2].getB() + rgbIDs[3].getB()) / 4
+        Color clr = new Color((rgbIDs[0].r() + rgbIDs[1].r() + rgbIDs[2].r() + rgbIDs[3].r()) / 4,
+                (rgbIDs[0].g() + rgbIDs[1].g() + rgbIDs[2].g() + rgbIDs[3].g()) / 4,
+                (rgbIDs[0].b() + rgbIDs[1].b() + rgbIDs[2].b() + rgbIDs[3].b()) / 4
         );
-        this.setColor(new Color((float) clr.getR(), (float) clr.getG(), (float) clr.getB()));
+        this.setColor(clr);
     }
 
     /**
@@ -63,11 +61,11 @@ public class ColorSide extends Side
             int xBotNxt = (xPoints[3] - xPoints[0]) * (i + 1) / uCount + xPoints[0];
             int yBotNxt = (yPoints[3] - yPoints[0]) * (i + 1) / uCount + yPoints[0];
 
-            // И ColorRGB координатах
-            ColorRGB rgbUp = rgbIDs[2].diff(rgbIDs[1]).mulScalar((double) i / (double) uCount).sum(rgbIDs[1]);
-            ColorRGB rgbBot = rgbIDs[3].diff(rgbIDs[0]).mulScalar((double) i / (double) uCount).sum(rgbIDs[0]);
-            ColorRGB rgbUpNxt = rgbIDs[2].diff(rgbIDs[1]).mulScalar((double) (i + 1) / (double) uCount).sum(rgbIDs[1]);
-            ColorRGB rgbBotNxt = rgbIDs[3].diff(rgbIDs[0]).mulScalar((double) (i + 1) / (double) uCount).sum(rgbIDs[0]);
+            // И Color координатах
+            Color rgbUp = rgbIDs[2].sub(rgbIDs[1]).mul((double) i / (double) uCount).sum(rgbIDs[1]);
+            Color rgbBot = rgbIDs[3].sub(rgbIDs[0]).mul((double) i / (double) uCount).sum(rgbIDs[0]);
+            Color rgbUpNxt = rgbIDs[2].sub(rgbIDs[1]).mul((double) (i + 1) / (double) uCount).sum(rgbIDs[1]);
+            Color rgbBotNxt = rgbIDs[3].sub(rgbIDs[0]).mul((double) (i + 1) / (double) uCount).sum(rgbIDs[0]);
 
             for (int j = 0; j < vCount; j++)
             {
@@ -87,12 +85,12 @@ public class ColorSide extends Side
                 int[] resX = {x00, x01, x02, x03};
                 int[] resY = {y00, y01, y02, y03};
 
-                // И ColorRGB координатах
-                ColorRGB clr = rgbUp.diff(rgbBot).mulScalar((double) j / (double) vCount).sum(rgbBot);
-                ColorRGB clrNxt = rgbUpNxt.diff(rgbBotNxt).mulScalar((double) (j + 1) / (double) vCount).sum(rgbBot);
-                ColorRGB realClr = clr.sum(clrNxt).mulScalar(0.5);
+                // И Color координатах
+                Color clr = (Color) rgbUp.sub(rgbBot).mul((double) j / (double) vCount).sum(rgbBot);
+                Color clrNxt = (Color) rgbUpNxt.sub(rgbBotNxt).mul((double) (j + 1) / (double) vCount).sum(rgbBot);
+                Color realClr = (Color) clr.sum(clrNxt).mul(0.5);
 
-                pSides[i * vCount + j] = new Side(zAxis, resX, resY, new Color((float) realClr.getR(), (float) realClr.getG(), (float) realClr.getB()));
+                pSides[i * vCount + j] = new Side(zAxis, resX, resY, new Color(realClr.r(), realClr.g(), realClr.b()));
             }
         }
         return pSides;

@@ -173,7 +173,7 @@ public class CubePanel extends JPanel implements ActionListener
             Side[] seg = ((ColorSide) side).pieces(segments.getValue(), segments.getValue());
             for (Side aSeg : seg)
             {
-                g.setColor(aSeg.getColor());
+                g.setColor(Helper.toAWT(aSeg.getColor()));
                 g.fillPolygon(aSeg.getXPoints(), aSeg.getYPoints(), 4);
             }
         }
