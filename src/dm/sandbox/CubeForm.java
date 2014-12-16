@@ -1,7 +1,7 @@
 /**
  * @author Архангельский Илья
  */
-package org.dmlaps;
+package dm.sandbox;
 
 import javax.swing.*;
 import java.awt.*;

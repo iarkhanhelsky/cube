@@ -1,6 +1,6 @@
-package org.dmlaps.cube;
+package dm.sandbox.cube;
 
-import org.dmlaps.gfx.Color;
+import dm.sandbox.gfx.Color;
 
 /**
  * Класс "Цветовая грань".
@@ -24,7 +24,7 @@ public class ColorSide extends Side
      * @param rgbIDs  массив Color индексов соответсвующих вершинам грани.
      */
 
-    public ColorSide(int zAxis, int[] xPoints, int[] yPoints, org.dmlaps.gfx.Color[] rgbIDs)
+    public ColorSide(int zAxis, int[] xPoints, int[] yPoints, dm.sandbox.gfx.Color[] rgbIDs)
     {
         super(zAxis, xPoints, yPoints, Color.BLACK);
         this.rgbIDs = rgbIDs;

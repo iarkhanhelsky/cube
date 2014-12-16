@@ -1,10 +1,10 @@
 /**
  * @author Архангельский Илья
  */
-package org.dmlaps.cube;
+package dm.sandbox.cube;
 
 
-import org.dmlaps.gfx.Color;
+import dm.sandbox.gfx.Color;
 
 /**
  * Реализация класса "Грань".

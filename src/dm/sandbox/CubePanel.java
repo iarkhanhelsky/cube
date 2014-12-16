@@ -1,13 +1,13 @@
 /**
  * @author Архангельский Илья
  */
-package org.dmlaps;
+package dm.sandbox;
 
 
-import org.dmlaps.cube.ColorCube;
-import org.dmlaps.cube.ColorSide;
-import org.dmlaps.cube.Cube;
-import org.dmlaps.cube.Side;
+import dm.sandbox.cube.ColorCube;
+import dm.sandbox.cube.ColorSide;
+import dm.sandbox.cube.Cube;
+import dm.sandbox.cube.Side;
 
 import javax.swing.*;
 import java.awt.*;

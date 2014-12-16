@@ -1,8 +1,8 @@
 
-package org.dmlaps.gfx;
+package dm.sandbox.gfx;
 
-import org.dmlaps.cube.Vector;
-import org.dmlaps.cube.Vertex;
+import dm.sandbox.cube.Vector;
+import dm.sandbox.cube.Vertex;
 
 /**
  * Класс Color

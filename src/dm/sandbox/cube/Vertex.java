@@ -1,7 +1,7 @@
 /**
  * @author Архангельский Илья
  */
-package org.dmlaps.cube;
+package dm.sandbox.cube;
 
 /**
  * Реализация класса "Вершина".

@@ -1,7 +1,7 @@
-package org.dmlaps.cube;
+package dm.sandbox.cube;
 
 
-import org.dmlaps.gfx.Color;
+import dm.sandbox.gfx.Color;
 
 import java.util.Arrays;
 

@@ -1,6 +1,6 @@
-package org.dmlaps;
+package dm.sandbox;
 
-import org.dmlaps.gfx.Color;
+import dm.sandbox.gfx.Color;
 
 /**
  * User: Ilya Arkhanhelsky

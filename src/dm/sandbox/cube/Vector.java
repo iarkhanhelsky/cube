@@ -1,4 +1,4 @@
-package org.dmlaps.cube;
+package dm.sandbox.cube;
 
 import java.util.Arrays;
 
