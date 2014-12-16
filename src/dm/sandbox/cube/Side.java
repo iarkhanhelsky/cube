@@ -97,6 +97,16 @@ public class Side implements Comparable<Side>
 
     public void draw(Graphics g, int layers)
     {
+        int[] xPoints = getXPoints();
+        int[] yPoints = getYPoints();
+        int[] points = new int[yPoints.length + xPoints.length];
 
+        for(int i = 0; i < xPoints.length; i++)
+        {
+            points[2*i] = xPoints[i];
+            points[2*i + 1] = yPoints[i];
+        }
+
+        g.fillPoly(getColor(), points);
     }
 }

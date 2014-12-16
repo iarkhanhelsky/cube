@@ -4,7 +4,6 @@
 package dm.sandbox;
 
 
-import dm.sandbox.cube.ColorCube;
 import dm.sandbox.cube.Cube;
 import dm.sandbox.gfx.AWTGraphics;
 import dm.sandbox.gfx.Color;
@@ -43,8 +42,6 @@ public class CubePanel extends JPanel implements ActionListener
     private double yaw = 0;
     private double roll = 0;
     private double pitch = 0;
-
-    private JSlider segments;
 
 
     public class MouseReaction extends MouseAdapter
@@ -113,7 +110,7 @@ public class CubePanel extends JPanel implements ActionListener
 
         //начальное значение длины ребра куба
         int EDGE = 300;
-        cube = new ColorCube(EDGE);
+        cube = new Cube(EDGE);
     }
 
     private JPanel initSlider()
@@ -121,7 +118,7 @@ public class CubePanel extends JPanel implements ActionListener
         int SEGMENTS_MAX = 80;
         int SEGMENTS_MIN = 2;
         int SEGMENTS_INIT = 8;
-        segments = new JSlider(JSlider.HORIZONTAL, SEGMENTS_MIN, SEGMENTS_MAX, SEGMENTS_INIT);
+        JSlider segments = new JSlider(JSlider.HORIZONTAL, SEGMENTS_MIN, SEGMENTS_MAX, SEGMENTS_INIT);
 
         segments.setMajorTickSpacing(10);
         segments.setBounds(new Rectangle(this.getBounds().width, 10));
@@ -132,11 +129,12 @@ public class CubePanel extends JPanel implements ActionListener
         segments.setPaintLabels(true);
         segments.setBounds(10, 10, 10, this.getBounds().width);
 
-        segments.addChangeListener(new ChangeListener() {
+        segments.addChangeListener(new ChangeListener()
+        {
             @Override
             public void stateChanged(ChangeEvent e)
             {
-                cube.layers(((JSlider)e.getSource()).getValue());
+                cube.layers(((JSlider) e.getSource()).getValue());
             }
         });
 

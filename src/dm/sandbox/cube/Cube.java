@@ -242,12 +242,12 @@ public class Cube
         int SideEZCenter = (z[6] + z[4]) / 2;
         int SideFZCenter = (z[6] + z[3]) / 2;
 
-        sides[0] = new Side(SideAZCenter, SideAX, SideAY, new Color(238, 135, 31));
-        sides[1] = new Side(SideBZCenter, SideBX, SideBY, new Color(84, 31, 20));
-        sides[2] = new Side(SideCZCenter, SideCX, SideCY, new Color(147, 129, 114));
-        sides[3] = new Side(SideDZCenter, SideDX, SideDY, new Color(204, 158, 97));
-        sides[4] = new Side(SideEZCenter, SideEX, SideEY, new Color(98, 98, 102));
-        sides[5] = new Side(SideFZCenter, SideFX, SideFY, new Color(254, 233, 142));
+        sides[0] = new Side(SideAZCenter, SideAX, SideAY, new Color(238/255f, 135/255f, 31/255f));
+        sides[1] = new Side(SideBZCenter, SideBX, SideBY, new Color(84/255f, 31/255f, 20/255f));
+        sides[2] = new Side(SideCZCenter, SideCX, SideCY, new Color(147/255f, 129/255f, 114/255f));
+        sides[3] = new Side(SideDZCenter, SideDX, SideDY, new Color(204/255f, 158/255f, 97/255f));
+        sides[4] = new Side(SideEZCenter, SideEX, SideEY, new Color(98/255f, 98/255f, 102/255f));
+        sides[5] = new Side(SideFZCenter, SideFX, SideFY, new Color(254/255f, 233/255f, 142/255f));
         /**Сортировка граней по Z координате. От нижних к верхним. Для правильной
          * очередности отрисовки
          */
