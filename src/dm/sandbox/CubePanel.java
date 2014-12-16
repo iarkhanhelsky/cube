@@ -5,13 +5,19 @@ package dm.sandbox;
 
 
 import dm.sandbox.cube.ColorCube;
-import dm.sandbox.cube.ColorSide;
 import dm.sandbox.cube.Cube;
-import dm.sandbox.cube.Side;
+import dm.sandbox.gfx.AWTGraphics;
+import dm.sandbox.gfx.Color;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 /**
  * @author Ilya Arkhanhelsky
@@ -41,9 +47,8 @@ public class CubePanel extends JPanel implements ActionListener
     private JSlider segments;
 
 
-    public class mouseAdapter extends MouseAdapter
+    public class MouseReaction extends MouseAdapter
     {
-
         @Override
         public void mouseReleased(MouseEvent e)
         {
@@ -97,14 +102,14 @@ public class CubePanel extends JPanel implements ActionListener
         JPanel sliderPanel = initSlider();
         add(sliderPanel);
 
-        setBorder(BorderFactory.createLineBorder(Color.black));
+        setBorder(BorderFactory.createLineBorder(java.awt.Color.black));
 
         timer = new Timer(50, this);
         timer.start();
 
-        addMouseMotionListener(new mouseAdapter());
-        addMouseListener(new mouseAdapter());
-        addMouseWheelListener(new mouseAdapter());
+        addMouseMotionListener(new MouseReaction());
+        addMouseListener(new MouseReaction());
+        addMouseWheelListener(new MouseReaction());
 
         //начальное значение длины ребра куба
         int EDGE = 300;
@@ -126,6 +131,14 @@ public class CubePanel extends JPanel implements ActionListener
 
         segments.setPaintLabels(true);
         segments.setBounds(10, 10, 10, this.getBounds().width);
+
+        segments.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e)
+            {
+                cube.layers(((JSlider)e.getSource()).getValue());
+            }
+        });
 
 
         JPanel sliderPanel = new JPanel();
@@ -155,29 +168,14 @@ public class CubePanel extends JPanel implements ActionListener
     protected void paintComponent(Graphics gOrig)
     {
         super.paintComponent(gOrig);
-        Graphics2D g = (Graphics2D) gOrig;
+        ((Graphics2D)gOrig).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         this.setDoubleBuffered(true);
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g.setColor(new Color(236, 236, 236));
-        g.fillRect(0, 0, this.getBounds().width, this.getBounds().height);
-        g.setColor(Color.BLACK);
+        AWTGraphics awtGraphics = new AWTGraphics(gOrig);
+        awtGraphics.fillRect(new Color(236/255f, 236/255f, 236/255f), 0, 0, this.getBounds().width, this.getBounds().height);
 
-        Side[] sides = cube.getProjectedSides();
-
-        g.translate(this.getBounds().width / 2, this.getBounds().height / 2);
-
-        /** Отрисовка*/
-        for (Side side : sides)
-        {
-            Side[] seg = ((ColorSide) side).pieces(segments.getValue(), segments.getValue());
-            for (Side aSeg : seg)
-            {
-                g.setColor(Helper.toAWT(aSeg.getColor()));
-                g.fillPolygon(aSeg.getXPoints(), aSeg.getYPoints(), 4);
-            }
-        }
-        g.translate(-this.getBounds().width / 2, -this.getBounds().height / 2);
-
+        awtGraphics.translate(this.getBounds().width / 2, this.getBounds().height / 2);
+        cube.draw(awtGraphics);
+        awtGraphics.translate(-this.getBounds().width / 2, -this.getBounds().height / 2);
     }
 }

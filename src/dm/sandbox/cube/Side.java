@@ -5,6 +5,7 @@ package dm.sandbox.cube;
 
 
 import dm.sandbox.gfx.Color;
+import dm.sandbox.gfx.Graphics;
 
 /**
  * Реализация класса "Грань".
@@ -92,5 +93,10 @@ public class Side implements Comparable<Side>
     public int[] getYPoints()
     {
         return yPoints;
+    }
+
+    public void draw(Graphics g, int layers)
+    {
+
     }
 }

@@ -12,7 +12,6 @@ import java.util.Arrays;
  */
 public class ColorCube extends Cube
 {
-
     /**
      * RGB индексы вершин
      */

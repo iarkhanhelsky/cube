@@ -2,6 +2,7 @@ package dm.sandbox.cube;
 
 
 import dm.sandbox.gfx.Color;
+import dm.sandbox.gfx.Graphics;
 
 import java.util.Arrays;
 
@@ -28,6 +29,7 @@ public class Cube
      * Проекционный коэффициент
      */
     protected final int distCoeff = 8;
+    private int layers = 2;
 
     /**
      * Создает куб с центром в точке (0,0,0) и длинной ребра edgeLength
@@ -47,6 +49,7 @@ public class Cube
         vertexes[5] = new Vertex(-this.edgeLength, -this.edgeLength, this.edgeLength);
         vertexes[6] = new Vertex(-this.edgeLength, -this.edgeLength, -this.edgeLength);
         vertexes[7] = new Vertex(this.edgeLength, -this.edgeLength, -this.edgeLength);
+
         distance = distCoeff * this.edgeLength;
     }
 
@@ -218,55 +221,19 @@ public class Cube
 
         Side[] sides = new Side[6];
 
-        int[] SideAX =
-                {
-                        x[0], x[1], x[2], x[3]
-                };
-        int[] SideBX =
-                {
-                        x[0], x[1], x[5], x[4]
-                };
-        int[] SideCX =
-                {
-                        x[0], x[3], x[7], x[4]
-                };
-        int[] SideDX =
-                {
-                        x[6], x[5], x[1], x[2]
-                };
-        int[] SideEX =
-                {
-                        x[6], x[7], x[4], x[5]
-                };
-        int[] SideFX =
-                {
-                        x[6], x[2], x[3], x[7]
-                };
+        int[] SideAX = { x[0], x[1], x[2], x[3] };
+        int[] SideBX = { x[0], x[1], x[5], x[4] };
+        int[] SideCX = { x[0], x[3], x[7], x[4] };
+        int[] SideDX = { x[6], x[5], x[1], x[2] };
+        int[] SideEX = { x[6], x[7], x[4], x[5] };
+        int[] SideFX = { x[6], x[2], x[3], x[7] };
 
-        int[] SideAY =
-                {
-                        y[0], y[1], y[2], y[3]
-                };
-        int[] SideBY =
-                {
-                        y[0], y[1], y[5], y[4]
-                };
-        int[] SideCY =
-                {
-                        y[0], y[3], y[7], y[4]
-                };
-        int[] SideDY =
-                {
-                        y[6], y[5], y[1], y[2]
-                };
-        int[] SideEY =
-                {
-                        y[6], y[7], y[4], y[5]
-                };
-        int[] SideFY =
-                {
-                        y[6], y[2], y[3], y[7]
-                };
+        int[] SideAY = { y[0], y[1], y[2], y[3] };
+        int[] SideBY = { y[0], y[1], y[5], y[4] };
+        int[] SideCY = { y[0], y[3], y[7], y[4] };
+        int[] SideDY = { y[6], y[5], y[1], y[2] };
+        int[] SideEY = { y[6], y[7], y[4], y[5] };
+        int[] SideFY = { y[6], y[2], y[3], y[7] };
 
         int SideAZCenter = (z[0] + z[2]) / 2;
         int SideBZCenter = (z[0] + z[5]) / 2;
@@ -286,5 +253,26 @@ public class Cube
          */
         Arrays.sort(sides);
         return sides;
+    }
+
+    public void draw(Graphics g)
+    {
+        Side[] sides = getProjectedSides();
+
+        /** Отрисовка*/
+        for (Side side : sides)
+        {
+           side.draw(g, layers());
+        }
+    }
+
+    public int layers()
+    {
+        return layers;
+    }
+
+    public void layers(int value)
+    {
+        layers = value;
     }
 }

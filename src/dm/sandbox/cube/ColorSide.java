@@ -1,6 +1,7 @@
 package dm.sandbox.cube;
 
 import dm.sandbox.gfx.Color;
+import dm.sandbox.gfx.Graphics;
 
 /**
  * Класс "Цветовая грань".
@@ -86,9 +87,9 @@ public class ColorSide extends Side
                 int[] resY = {y00, y01, y02, y03};
 
                 // И Color координатах
-                Color clr = (Color) rgbUp.sub(rgbBot).mul((double) j / (double) vCount).sum(rgbBot);
-                Color clrNxt = (Color) rgbUpNxt.sub(rgbBotNxt).mul((double) (j + 1) / (double) vCount).sum(rgbBot);
-                Color realClr = (Color) clr.sum(clrNxt).mul(0.5);
+                Color clr = rgbUp.sub(rgbBot).mul((double) j / (double) vCount).sum(rgbBot);
+                Color clrNxt = rgbUpNxt.sub(rgbBotNxt).mul((double) (j + 1) / (double) vCount).sum(rgbBot);
+                Color realClr = clr.sum(clrNxt).mul(0.5);
 
                 pSides[i * vCount + j] = new Side(zAxis, resX, resY, new Color(realClr.r(), realClr.g(), realClr.b()));
             }
@@ -96,5 +97,23 @@ public class ColorSide extends Side
         return pSides;
     }
 
+    @Override
+    public void draw(Graphics g, int layers)
+    {
+        Side[] seg = this.pieces(layers, layers);
+        for (Side aSeg : seg)
+        {
+            int[] xPoints = aSeg.getXPoints();
+            int[] yPoints = aSeg.getYPoints();
+            int[] points = new int[yPoints.length + xPoints.length];
 
+            for(int i = 0; i < xPoints.length; i++)
+            {
+                points[2*i] = xPoints[i];
+                points[2*i + 1] = yPoints[i];
+            }
+
+            g.fillPoly(aSeg.getColor(), points);
+        }
+    }
 }
